@@ -302,7 +302,7 @@ body {
   justify-content: center;
   align-items: center;
   text-align: center;
-  background-image: url(images/banner/b2.jpg);
+  background-image: url("../images/banner/b2.jpg");
   background-size: cover;
   background-position: center;
   width: 100%;
@@ -341,10 +341,10 @@ body {
   justify-content: center;
   align-items: flex-start;
   text-align: center;
-  background-image: url(images/banner/b17.jpg);
+  background-image: url("../images/banner/b17.jpg");
   background-size: cover;
   background-position: center;
-  min-width: 850px;
+  min-width: 100%;
   height: 50vh;
   padding: 30px;
 }
@@ -374,7 +374,7 @@ body {
 }
 
 #sm-banner .banner-box:nth-child(2) {
-  background-image: url(images/banner/b10.jpg);
+  background-image: url("../images/banner/b10.jpg");
 }
 
 #banner3 .banner-box {
@@ -383,7 +383,7 @@ body {
   justify-content: center;
   align-items: flex-start;
   text-align: center;
-  background-image: url(images/banner/b7.jpg);
+  background-image: url("../images/banner/b7.jpg");
   background-size: cover;
   background-position: center;
   min-width: 30%;
@@ -393,11 +393,11 @@ body {
 }
 
 #banner3 .banner-box:nth-child(2) {
-  background-image: url(images/banner/b4.jpg);
+  background-image: url("../images/banner/b4.jpg");
 }
 
 #banner3 .banner-box:nth-child(3) {
-  background-image: url(images/banner/b18.jpg);
+  background-image: url("../images/banner/b18.jpg");
 }
 
 #banner3 {
@@ -424,7 +424,7 @@ body {
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  background-image: url(images/banner/b14.png);
+  background-image: url("../images/banner/b14.png");
   background-repeat: no-repeat;
   background-position: 20% 30%;
   background-color: #041e42;
@@ -534,7 +534,7 @@ footer .copyright {
 /* Shop Page */
 
 #page-header {
-  background-image: url(images/banner/b1.jpg);
+  background-image: url("../images/banner/b1.jpg");
   width: 100%;
   height: 40vh;
   background-size: cover;
@@ -633,7 +633,7 @@ footer .copyright {
 /* Blog Page */
 
 #page-header.blog-header {
-  background-image: url(images/banner/b19.jpg);
+  background-image: url("../images/banner/b19.jpg");
 }
 
 #blog {
@@ -703,7 +703,7 @@ footer .copyright {
 /* About Page */
 
 #page-header.about-header {
-  background-image: url(images/about/banner.png);
+  background-image: url("../images/about/banner.png");
 }
 
 #about-head {

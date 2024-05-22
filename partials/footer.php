@@ -1,6 +1,6 @@
 <footer class="section-p1">
     <div class="col">
-        <img class="logo" src="images/logo.png" alt="">
+        <img class="logo" src="images/logo.png" alt="" style="width: 150px">
         <h4>Contact</h4>
         <p><strong>Address:</strong> Lahore, Pakistan - 54840</p>
         <p><strong>Phone:</strong> +92-321-4655990</p>

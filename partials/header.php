@@ -18,7 +18,7 @@
 <body>
 
     <section id="header">
-        <a href="/sonnieshub"><img src="images/logo.png" class="logo" alt=""></a>
+        <a href="/sonnieshub"><img src="images/logo.png" class="logo" alt="" style="border: none; width: 150px"></a>
         <div>
             <ul id="navbar">
                 <li><a class="active" href="/sonnieshub">Home</a></li>
