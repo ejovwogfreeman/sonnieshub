@@ -12,7 +12,7 @@ function redirect()
 
 // Check if the user is logged in (adjust this based on your authentication logic)
 if (isset($_SESSION['user'])) {
-    $user = $_SESSION['user'][0];
+    $user = $_SESSION['user'];
     $userId = $user['user_id'];
 }
 
@@ -41,8 +41,20 @@ if (mysqli_num_rows($resultCart) == 0) {
         redirect();
     }
 
+    // // Get the newly created cart ID
+    // $cartId = mysqli_insert_id($conn);
+
     // Get the newly created cart ID
-    $cartId = mysqli_insert_id($conn);
+    $selectCartIdQuery = "SELECT cart_id FROM carts WHERE user_id = '$userId' AND status = 'open' AND created_at = '$createdAt'";
+    $resultSelectCartId = mysqli_query($conn, $selectCartIdQuery);
+
+    if (!$resultSelectCartId) {
+        $_SESSION['msg'] = "Error fetching cart ID: " . mysqli_error($conn);
+        redirect();
+    }
+
+    $row = mysqli_fetch_assoc($resultSelectCartId);
+    $cartId = $row['cart_id'];
 } else {
     // If the user already has an open cart, get its ID
     $cartRow = mysqli_fetch_assoc($resultCart);
@@ -77,7 +89,7 @@ $pricePaid = $quantity * $productRow['product_price'];
 
 if (mysqli_num_rows($resultItem) == 0) {
     // Item is not in the cart, add it
-    $insertItemQuery = "INSERT INTO cart_items (`cart_item_id`, `cart_id`, `product_id`, `product_name`, `quantity`, `price_paid`) VALUES ('$randomId', '$cartId', '$productId', '$productName', '$quantity', '$pricePaid')";
+    $insertItemQuery = "INSERT INTO cart_items (cart_item_id, cart_id, product_id, product_name, quantity, price_paid) VALUES ('$randomId', '$cartId', '$productId', '$productName', '$quantity', '$pricePaid')";
     $resultInsertItem = mysqli_query($conn, $insertItemQuery);
 
     if ($resultInsertItem) {

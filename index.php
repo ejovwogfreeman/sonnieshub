@@ -54,6 +54,12 @@ switch ($requestUri) {
     case '/remove_from_cart':
         require 'views/remove_from_cart.php';
         break;
+    case '/increase':
+        require 'views/increase.php';
+        break;
+    case '/decrease':
+        require 'views/decrease.php';
+        break;
     case '/register':
         require 'views/register.php';
         break;

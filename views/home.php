@@ -6,7 +6,7 @@ include('./config/db.php');
 include('./utils/random_id.php');
 
 if (isset($_SESSION['user'])) {
-    $user = $_SESSION['user'][0];
+    $user = $_SESSION['user'];
     $userId = $user['user_id'];
 }
 
