@@ -1,8 +1,95 @@
 <?php
 
 include('./partials/header.php');
+include('./config/session.php'); // Ensure this includes session_start()
+include('./config/db.php');
+include('./utils/random_id.php');
+
+if (isset($_SESSION['user'])) {
+    $user = $_SESSION['user'][0];
+    $userId = $user['user_id'];
+}
+
+
+// Fetch products from the database
+$sql = "SELECT * FROM products";
+$result = mysqli_query($conn, $sql);
+
+$products = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+function showFlyingAlert($message, $className)
+{
+    echo <<<EOT
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var alertDiv = document.createElement("div");
+            alertDiv.className = "{$className}";
+            alertDiv.innerHTML = "{$message}";
+            document.body.appendChild(alertDiv);
+
+            // Triggering reflow to enable animation
+            alertDiv.offsetWidth;
+
+            // Add a class to trigger the fly-in animation
+            alertDiv.style.left = "10px";
+
+            // Remove the fly-in style after 3 seconds
+            setTimeout(function() {
+                alertDiv.style.left = "10px";
+            }, 2000);
+
+            // Add a class to trigger the fly-out animation after 3 seconds
+            setTimeout(function() {
+                alertDiv.style.left = "-300px";
+            }, 4000);
+
+            // Remove the element after the total duration of the animation (9 seconds)
+            setTimeout(function() {
+                alertDiv.remove();
+            }, 6000);
+        });
+    </script>
+EOT;
+}
+
+if (isset($_SESSION['msg'])) {
+    $message = $_SESSION['msg'];
+    if (stristr($message, "successfully") || stristr($message, "Successfully") || stristr($message, "SUCCESSFUL")) {
+        showFlyingAlert($message, "flying-success-alert");
+        unset($_SESSION['msg']);
+    } else {
+        showFlyingAlert($message, "flying-danger-alert");
+        unset($_SESSION['msg']);
+    }
+}
 
 ?>
+
+<style>
+    .flying-success-alert {
+        position: fixed;
+        z-index: 11111111111111;
+        top: 15px;
+        left: -300px;
+        background-color: #088178;
+        color: #fff;
+        padding: 10px;
+        border-radius: 5px;
+        transition: left 1.5s ease-in-out;
+    }
+
+    .flying-danger-alert {
+        position: fixed;
+        z-index: 11111111111111;
+        top: 15px;
+        left: -300px;
+        background-color: #FF5252;
+        color: #fff;
+        padding: 10px;
+        border-radius: 5px;
+        transition: left 1.5s ease-in-out;
+    }
+</style>
 
 <section id="hero">
     <h4>Trade-in-offer</h4>
@@ -43,134 +130,30 @@ include('./partials/header.php');
     <h2>Featured Products</h2>
     <p>Summer Collection New Modern Design</p>
     <div class="pro-container">
-        <div class="pro">
-            <img src="images/products/f1.jpg" alt="">
-            <div class="des">
-                <span>adidas</span>
-                <h5>Cartoon Astronaut T-Shirts</h5>
-                <div class="star">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
+        <?php foreach ($products as $product) : ?>
+            <div class="pro">
+                <!-- Make sure to use the correct column name for the image path -->
+                <?php
+                $imageData = $product['product_image'];
+                $imageInfo = getimagesizefromstring($imageData);
+
+                if ($imageInfo !== false) {
+                    $imageFormat = $imageInfo['mime'];
+                    $img_src = "data:$imageFormat;base64," . base64_encode($imageData);
+                } else {
+                    echo "Unable to determine image type.";
+                }
+                ?>
+                <img src="<?php echo $img_src ?>" alt="">
+                <div class="des">
+                    <span><?php echo $product['product_category']; ?></span>
+                    <h5><?php echo $product['product_name']; ?></h5>
+                    <p><?php echo $product['product_description'] ?></p>
+                    <h4>$<?php echo $product['product_price']; ?></h4>
                 </div>
-                <h4>$78</h4>
+                <a href=<?php echo "add_to_cart?id={$product['product_id']}" ?>><i class="fas fa-shopping-cart cart"></i></a>
             </div>
-            <a href="#"><i class="fas fa-shopping-cart cart"></i></a>
-        </div>
-        <div class="pro">
-            <img src="images/products/f2.jpg" alt="">
-            <div class="des">
-                <span>adidas</span>
-                <h5>Cartoon Astronaut T-Shirts</h5>
-                <div class="star">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                </div>
-                <h4>$78</h4>
-            </div>
-            <a href="#"><i class="fas fa-shopping-cart cart"></i></a>
-        </div>
-        <div class="pro">
-            <img src="images/products/f3.jpg" alt="">
-            <div class="des">
-                <span>adidas</span>
-                <h5>Cartoon Astronaut T-Shirts</h5>
-                <div class="star">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                </div>
-                <h4>$78</h4>
-            </div>
-            <a href="#"><i class="fas fa-shopping-cart cart"></i></a>
-        </div>
-        <div class="pro">
-            <img src="images/products/f4.jpg" alt="">
-            <div class="des">
-                <span>adidas</span>
-                <h5>Cartoon Astronaut T-Shirts</h5>
-                <div class="star">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                </div>
-                <h4>$78</h4>
-            </div>
-            <a href="#"><i class="fas fa-shopping-cart cart"></i></a>
-        </div>
-        <div class="pro">
-            <img src="images/products/f5.jpg" alt="">
-            <div class="des">
-                <span>adidas</span>
-                <h5>Cartoon Astronaut T-Shirts</h5>
-                <div class="star">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                </div>
-                <h4>$78</h4>
-            </div>
-            <a href="#"><i class="fas fa-shopping-cart cart"></i></a>
-        </div>
-        <div class="pro">
-            <img src="images/products/f6.jpg" alt="">
-            <div class="des">
-                <span>adidas</span>
-                <h5>Cartoon Astronaut T-Shirts</h5>
-                <div class="star">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                </div>
-                <h4>$78</h4>
-            </div>
-            <a href="#"><i class="fas fa-shopping-cart cart"></i></a>
-        </div>
-        <div class="pro">
-            <img src="images/products/f7.jpg" alt="">
-            <div class="des">
-                <span>adidas</span>
-                <h5>Cartoon Astronaut T-Shirts</h5>
-                <div class="star">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                </div>
-                <h4>$78</h4>
-            </div>
-            <a href="#"><i class="fas fa-shopping-cart cart"></i></a>
-        </div>
-        <div class="pro">
-            <img src="images/products/f8.jpg" alt="">
-            <div class="des">
-                <span>adidas</span>
-                <h5>Cartoon Astronaut T-Shirts</h5>
-                <div class="star">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                </div>
-                <h4>$78</h4>
-            </div>
-            <a href="#"><i class="fas fa-shopping-cart cart"></i></a>
-        </div>
+        <?php endforeach; ?>
     </div>
 </section>
 
@@ -181,137 +164,33 @@ include('./partials/header.php');
 </section>
 
 <section id="product1" class="section-p1">
-    <h2>New Arrivals</h2>
+    <h2>Featured Products</h2>
     <p>Summer Collection New Modern Design</p>
     <div class="pro-container">
-        <div class="pro">
-            <img src="images/products/n1.jpg" alt="">
-            <div class="des">
-                <span>adidas</span>
-                <h5>Cartoon Astronaut T-Shirts</h5>
-                <div class="star">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
+        <?php foreach ($products as $product) : ?>
+            <div class="pro">
+                <!-- Make sure to use the correct column name for the image path -->
+                <?php
+                $imageData = $product['product_image'];
+                $imageInfo = getimagesizefromstring($imageData);
+
+                if ($imageInfo !== false) {
+                    $imageFormat = $imageInfo['mime'];
+                    $img_src = "data:$imageFormat;base64," . base64_encode($imageData);
+                } else {
+                    echo "Unable to determine image type.";
+                }
+                ?>
+                <img src="<?php echo $img_src ?>" alt="">
+                <div class="des">
+                    <span><?php echo $product['product_category']; ?></span>
+                    <h5><?php echo $product['product_name']; ?></h5>
+                    <p><?php echo $product['product_description'] ?></p>
+                    <h4>$<?php echo $product['product_price']; ?></h4>
                 </div>
-                <h4>$78</h4>
+                <a href=<?php echo "add_to_cart?id={$product['product_id']}" ?>><i class="fas fa-shopping-cart cart"></i></a>
             </div>
-            <a href="#"><i class="fas fa-shopping-cart cart"></i></a>
-        </div>
-        <div class="pro">
-            <img src="images/products/n2.jpg" alt="">
-            <div class="des">
-                <span>adidas</span>
-                <h5>Cartoon Astronaut T-Shirts</h5>
-                <div class="star">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                </div>
-                <h4>$78</h4>
-            </div>
-            <a href="#"><i class="fas fa-shopping-cart cart"></i></a>
-        </div>
-        <div class="pro">
-            <img src="images/products/n3.jpg" alt="">
-            <div class="des">
-                <span>adidas</span>
-                <h5>Cartoon Astronaut T-Shirts</h5>
-                <div class="star">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                </div>
-                <h4>$78</h4>
-            </div>
-            <a href="#"><i class="fas fa-shopping-cart cart"></i></a>
-        </div>
-        <div class="pro">
-            <img src="images/products/n4.jpg" alt="">
-            <div class="des">
-                <span>adidas</span>
-                <h5>Cartoon Astronaut T-Shirts</h5>
-                <div class="star">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                </div>
-                <h4>$78</h4>
-            </div>
-            <a href="#"><i class="fas fa-shopping-cart cart"></i></a>
-        </div>
-        <div class="pro">
-            <img src="images/products/n5.jpg" alt="">
-            <div class="des">
-                <span>adidas</span>
-                <h5>Cartoon Astronaut T-Shirts</h5>
-                <div class="star">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                </div>
-                <h4>$78</h4>
-            </div>
-            <a href="#"><i class="fas fa-shopping-cart cart"></i></a>
-        </div>
-        <div class="pro">
-            <img src="images/products/n6.jpg" alt="">
-            <div class="des">
-                <span>adidas</span>
-                <h5>Cartoon Astronaut T-Shirts</h5>
-                <div class="star">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                </div>
-                <h4>$78</h4>
-            </div>
-            <a href="#"><i class="fas fa-shopping-cart cart"></i></a>
-        </div>
-        <div class="pro">
-            <img src="images/products/n7.jpg" alt="">
-            <div class="des">
-                <span>adidas</span>
-                <h5>Cartoon Astronaut T-Shirts</h5>
-                <div class="star">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                </div>
-                <h4>$78</h4>
-            </div>
-            <a href="#"><i class="fas fa-shopping-cart cart"></i></a>
-        </div>
-        <div class="pro">
-            <img src="images/products/n8.jpg" alt="">
-            <div class="des">
-                <span>adidas</span>
-                <h5>Cartoon Astronaut T-Shirts</h5>
-                <div class="star">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                </div>
-                <h4>$78</h4>
-            </div>
-            <a href="#"><i class="fas fa-shopping-cart cart"></i></a>
-        </div>
+        <?php endforeach; ?>
     </div>
 </section>
 

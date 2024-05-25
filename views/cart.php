@@ -1,5 +1,6 @@
 <?php
 
+include('get_cart_items.php');
 include('./partials/header.php');
 
 ?>
@@ -22,30 +23,35 @@ include('./partials/header.php');
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td><a href="#"><i class="fas fa-times-circle" style="color:black"></i></a></td>
-                <td><img src="images/products/f1.jpg" alt=""></td>
-                <td>Cartoon Astronaut T-Shirt</td>
-                <td>$118.19</td>
-                <td><input type="number" value="1"></td>
-                <td>$118.19</td>
-            </tr>
-            <tr>
-                <td><a href="#"><i class="fas fa-times-circle" style="color:black"></i></a></td>
-                <td><img src="images/products/f2.jpg" alt=""></td>
-                <td>Cartoon Astronaut T-Shirt</td>
-                <td>$118.19</td>
-                <td><input type="number" value="1"></td>
-                <td>$118.19</td>
-            </tr>
-            <tr>
-                <td><a href="#"><i class="fas fa-times-circle" style="color:black"></i></a></td>
-                <td><img src="images/products/f3.jpg" alt=""></td>
-                <td>Cartoon Astronaut T-Shirt</td>
-                <td>$118.19</td>
-                <td><input type="number" value="1"></td>
-                <td>$118.19</td>
-            </tr>
+            <?php if (!empty($products)) : ?>
+                <?php foreach ($products as $product) : ?>
+                    <tr>
+                        <?php
+                        $imageData = $product['product_image'];
+                        $imageInfo = getimagesizefromstring($imageData);
+
+                        if ($imageInfo !== false) {
+                            $imageFormat = $imageInfo['mime'];
+                            $img_src = "data:$imageFormat;base64," . base64_encode($imageData);
+                        } else {
+                            echo "Unable to determine image type.";
+                        }
+                        ?>
+                        <td><span class="icon"><i class="fas fa-times-circle" style="color:black"></i></span></td>
+                        <td><img src=<?php echo $img_src ?> alt=""></td>
+                        <td><?php echo $product['product_name'] ?></td>
+                        <td>$ <?php echo number_format($product['product_price']) ?></td>
+                        <td>
+                            <span class="icon"><i class="fas fa-minus-circle" style="color:black"></i></span>
+                            <span><?php echo $product['quantity'] ?></span>
+                            <span class="icon"><i class="fas fa-plus-circle" style="color:black"></i></span>
+                        </td>
+                        <td>$ <?php echo number_format($product['quantity'] * $product['product_price']) ?></td>
+                    </tr>
+                <?php endforeach ?>
+            <?php else : ?>
+                <p>No products found in the cart.</p>
+            <?php endif ?>
         </tbody>
     </table>
 </section>
@@ -70,8 +76,12 @@ include('./partials/header.php');
                 <td>Free</td>
             </tr>
             <tr>
-                <td><strong>Total</strong></td>
-                <td><strong>$ 335</strong></td>
+                <td>Total Items</td>
+                <td><?php echo $totalQuantity ?></td>
+            </tr>
+            <tr>
+                <td><strong>Total Price</strong></td>
+                <td><strong>$ <?php echo number_format($totalPrice) ?></strong></td>
             </tr>
         </table>
         <button class="normal">Proceed to checkout</button>
@@ -83,3 +93,11 @@ include('./partials/header.php');
 include('./partials/footer.php');
 
 ?>
+
+<style>
+    .icon {
+        cursor: pointer;
+        color: #088178;
+        font-size: 18px;
+    }
+</style>

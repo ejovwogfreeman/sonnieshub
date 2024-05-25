@@ -39,8 +39,38 @@ switch ($requestUri) {
     case '/contact':
         require 'views/contact.php';
         break;
+    case '/dashboard':
+        require 'views/dashboard.php';
+        break;
     case '/cart':
         require 'views/cart.php';
+        break;
+    case '/cart':
+        require 'views/cart.php';
+        break;
+    case '/add_to_cart':
+        require 'views/add_to_cart.php';
+        break;
+    case '/remove_from_cart':
+        require 'views/remove_from_cart.php';
+        break;
+    case '/register':
+        require 'views/register.php';
+        break;
+    case '/login':
+        require 'views/login.php';
+        break;
+    case '/cart_endpoints':
+        require 'utils/cart_endpoints.php';
+        break;
+    case '/forgot_password':
+        require 'views/forgot_password.php';
+        break;
+    case '/logout':
+        require 'views/logout.php';
+        break;
+    case '/admin':
+        require 'admin/index.php';
         break;
     default:
         require 'views/404.php';

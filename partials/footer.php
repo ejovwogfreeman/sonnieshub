@@ -43,7 +43,7 @@
         <img src="images/pay/pay.png" alt="">
     </div>
     <div class="copyright">
-        <p>Created By Muhammad Awais | All Rights Reserved | &#169; 2023</p>
+        <p>SonniesHub | All Rights Reserved | &#169; 2023</p>
     </div>
 </footer>
 

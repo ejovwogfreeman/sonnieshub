@@ -18,7 +18,7 @@
 <body>
 
     <section id="header">
-        <a href="/sonnieshub"><img src="images/logo.png" class="logo" alt="" style="border: none; width: 150px"></a>
+        <a href="/sonnieshub"><img src="images/logo.png" class="logo" alt="" style="border: none; width: 100px"></a>
         <div>
             <ul id="navbar">
                 <li><a class="active" href="/sonnieshub">Home</a></li>
@@ -26,6 +26,9 @@
                 <li><a href="blog">Blog</a></li>
                 <li><a href="about">About</a></li>
                 <li><a href="contact">Contact</a></li>
+                <li><a href="register">Register</a></li>
+                <li><a href="login">Login</a></li>
+                <li><a href="dashboard">Dashboard</a></li>
                 <li id="lg-bag"><a href="cart"><i class="far fa-shopping-bag"></i></a></li>
                 <a href="#" id="close"><i class="far fa-times"></i></a>
             </ul>
