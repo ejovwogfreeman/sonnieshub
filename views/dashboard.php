@@ -1,7 +1,7 @@
 <?php
 
-include('./partials/header.php');
 session_start();
+include('./partials/header.php');
 
 if (isset($_SESSION['user'])) {
     $user = $_SESSION['user'];

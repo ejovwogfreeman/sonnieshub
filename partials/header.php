@@ -1,3 +1,15 @@
+<?php
+
+// // include('./views/get_cart_items.php');
+// include('./partials/header.php');
+
+// if (isset($_SESSION['user'])) {
+//     $user = $_SESSION['user'];
+//     $userId = $user['user_id'];
+// }
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,10 +38,14 @@
                 <li><a href="blog">Blog</a></li>
                 <li><a href="about">About</a></li>
                 <li><a href="contact">Contact</a></li>
-                <li><a href="register">Register</a></li>
-                <li><a href="login">Login</a></li>
-                <li><a href="dashboard">Dashboard</a></li>
-                <li id="lg-bag"><a href="cart"><i class="far fa-shopping-bag"></i></a></li>
+                <?php if (!isset($_SESSION['user'])) : ?>
+                    <li><a href="register">Register</a></li>
+                    <li><a href="login">Login</a></li>
+                <?php else : ?>
+                    <li><a href="dashboard">Dashboard</a></li>
+                    <li><a href="logout">Logout</a></li>
+                    <li id="lg-bag"><a href="cart"><i class="far fa-shopping-bag"></i></a></li>
+                <?php endif ?>
                 <a href="#" id="close"><i class="far fa-times"></i></a>
             </ul>
         </div>

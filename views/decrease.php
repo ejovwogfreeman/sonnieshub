@@ -3,32 +3,36 @@
 session_start();
 include('./config/db.php');
 
-function redirectWithMessage($message)
+function redirect()
 {
-    header('Location: index.php?message=' . urlencode($message));
+    header('Location: cart');
     exit();
 }
 
 // Check if the user is logged in (adjust this based on your authentication logic)
 if (isset($_SESSION['user'])) {
-    $user = $_SESSION['user'][0];
+    $user = $_SESSION['user'];
     $userId = $user['user_id'];
 
     // Get product ID from the request
     $productId = isset($_GET['id']) ? $_GET['id'] : null;
 
     if (!$productId) {
-        $message = "Product ID not provided";
-        redirectWithMessage($message);
+        $_SESSION['msg'] = "Product ID not provided";
+        redirect();
     }
 
+    // Escape the user ID and product ID
+    $userId = mysqli_real_escape_string($conn, $userId);
+    $productId = mysqli_real_escape_string($conn, $productId);
+
     // Fetch the user's open cart
-    $cartQuery = "SELECT * FROM carts WHERE user_id = $userId AND status = 'open'";
+    $cartQuery = "SELECT * FROM carts WHERE user_id = '$userId' AND status = 'open'";
     $cartResult = mysqli_query($conn, $cartQuery);
 
     if (!$cartResult) {
-        $message = "Error fetching user's cart: " . mysqli_error($conn);
-        redirectWithMessage($message);
+        $_SESSION['msg'] = "Error fetching user's cart: " . mysqli_error($conn);
+        redirect();
     }
 
     if (mysqli_num_rows($cartResult) > 0) {
@@ -37,12 +41,12 @@ if (isset($_SESSION['user'])) {
         $cartId = $cart['cart_id'];
 
         // Check if the item is in the cart
-        $checkItemQuery = "SELECT ci.*, p.product_price FROM cart_items ci JOIN products p ON ci.product_id = p.product_id WHERE ci.cart_id = $cartId AND ci.product_id = $productId";
+        $checkItemQuery = "SELECT ci.*, p.product_price FROM cart_items ci JOIN products p ON ci.product_id = p.product_id WHERE ci.cart_id = '$cartId' AND ci.product_id = '$productId'";
         $resultItem = mysqli_query($conn, $checkItemQuery);
 
         if (!$resultItem) {
-            $message = "Error checking item in the cart: " . mysqli_error($conn);
-            redirectWithMessage($message);
+            $_SESSION['msg'] = "Error checking item in the cart: " . mysqli_error($conn);
+            redirect();
         }
 
         if (mysqli_num_rows($resultItem) > 0) {
@@ -53,38 +57,39 @@ if (isset($_SESSION['user'])) {
             $newQuantity = max(0, $cartItem['quantity'] - 1);
             $newPrice = $newQuantity * $cartItem['product_price'];
 
-            $updateQuery = "UPDATE cart_items SET quantity = $newQuantity, price_paid = $newPrice WHERE cart_id = $cartId AND product_id = $productId";
+            $updateQuery = "UPDATE cart_items SET quantity = '$newQuantity', price_paid = '$newPrice' WHERE cart_id = '$cartId' AND product_id = '$productId'";
             $resultUpdate = mysqli_query($conn, $updateQuery);
 
             if (!$resultUpdate) {
-                $message = "Error updating quantity and price: " . mysqli_error($conn);
-                redirectWithMessage($message);
+                $_SESSION['msg'] = "Error updating quantity and price: " . mysqli_error($conn);
+                redirect();
             } else {
                 // Check if quantity is zero, remove the item from the cart
                 if ($newQuantity == 0) {
-                    $removeItemQuery = "DELETE FROM cart_items WHERE cart_id = $cartId AND product_id = $productId";
+                    $removeItemQuery = "DELETE FROM cart_items WHERE cart_id = '$cartId' AND product_id = '$productId'";
                     $resultRemoveItem = mysqli_query($conn, $removeItemQuery);
 
                     if (!$resultRemoveItem) {
-                        $message = "Error removing item from the cart: " . mysqli_error($conn);
-                        redirectWithMessage($message);
+                        $_SESSION['msg'] = "Error removing item from the cart: " . mysqli_error($conn);
+                        redirect();
                     } else {
-                        $message = "Item removed from the cart successfully!";
-                        redirectWithMessage($message);
+                        $_SESSION['msg'] = "Item removed from the cart successfully!";
+                        redirect();
                     }
                 } else {
-                    header('Location: cart.php');
+                    $_SESSION['msg'] = "Quantity updated successfully!";
+                    redirect();
                 }
             }
         } else {
-            $message = "Item not found in the cart";
-            redirectWithMessage($message);
+            $_SESSION['msg'] = "Item not found in the cart";
+            redirect();
         }
     } else {
-        $message = "You don't have an open cart.";
-        redirectWithMessage($message);
+        $_SESSION['msg'] = "You don't have an open cart.";
+        redirect();
     }
 } else {
-    $message = "User not logged in.";
-    redirectWithMessage($message);
+    $_SESSION['msg'] = "User not logged in.";
+    redirect();
 }

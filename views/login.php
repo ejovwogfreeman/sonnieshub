@@ -35,13 +35,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (mysqli_num_rows($result) > 0) {
             $user = mysqli_fetch_assoc($result);
 
-            var_dump($user);
-
             // Verify the password
             if (password_verify($password, $user['password'])) {
                 $_SESSION['msg'] = 'Login Successful';
                 $_SESSION['user'] = $user;
-                // header('Location: dashboard');
+                header('Location: dashboard');
                 exit();
             } else {
                 $errors['password'] = 'Invalid password.';

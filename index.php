@@ -45,8 +45,8 @@ switch ($requestUri) {
     case '/cart':
         require 'views/cart.php';
         break;
-    case '/cart':
-        require 'views/cart.php';
+    case '/checkout':
+        require 'views/checkout.php';
         break;
     case '/add_to_cart':
         require 'views/add_to_cart.php';

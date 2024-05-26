@@ -3,7 +3,79 @@
 include('get_cart_items.php');
 include('./partials/header.php');
 
+function showFlyingAlert($message, $className)
+{
+    echo <<<EOT
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var alertDiv = document.createElement("div");
+            alertDiv.className = "{$className}";
+            alertDiv.innerHTML = "{$message}";
+            document.body.appendChild(alertDiv);
+
+            // Triggering reflow to enable animation
+            alertDiv.offsetWidth;
+
+            // Add a class to trigger the fly-in animation
+            alertDiv.style.left = "10px";
+
+            // Remove the fly-in style after 3 seconds
+            setTimeout(function() {
+                alertDiv.style.left = "10px";
+            }, 2000);
+
+            // Add a class to trigger the fly-out animation after 3 seconds
+            setTimeout(function() {
+                alertDiv.style.left = "-300px";
+            }, 4000);
+
+            // Remove the element after the total duration of the animation (9 seconds)
+            setTimeout(function() {
+                alertDiv.remove();
+            }, 6000);
+        });
+    </script>
+EOT;
+}
+
+if (isset($_SESSION['msg'])) {
+    $message = $_SESSION['msg'];
+    if (stristr($message, "successfully") || stristr($message, "Successfully") || stristr($message, "SUCCESSFUL")) {
+        showFlyingAlert($message, "flying-success-alert");
+        unset($_SESSION['msg']);
+    } else {
+        showFlyingAlert($message, "flying-danger-alert");
+        unset($_SESSION['msg']);
+    }
+}
+
 ?>
+
+<style>
+    .flying-success-alert {
+        position: fixed;
+        z-index: 11111111111111;
+        top: 15px;
+        left: -300px;
+        background-color: #088178;
+        color: #fff;
+        padding: 10px;
+        border-radius: 5px;
+        transition: left 1.5s ease-in-out;
+    }
+
+    .flying-danger-alert {
+        position: fixed;
+        z-index: 11111111111111;
+        top: 15px;
+        left: -300px;
+        background-color: #FF5252;
+        color: #fff;
+        padding: 10px;
+        border-radius: 5px;
+        transition: left 1.5s ease-in-out;
+    }
+</style>
 
 <section id="page-header" class="about-header">
     <h2>#cart</h2>
@@ -38,7 +110,7 @@ include('./partials/header.php');
                         }
                         ?>
                         <td>
-                            <span class="icon"><i class="fas fa-times-circle" style="color:black"></i></span>
+                            <a href=<?php echo "remove_from_cart?id={$product['product_id']}" ?> class="icon"><i class="fas fa-times-circle" style="color:black"></i></a>
                         </td>
                         <td><img src=<?php echo $img_src ?> alt=""></td>
                         <td><?php echo $product['product_name'] ?></td>
@@ -63,7 +135,7 @@ include('./partials/header.php');
     <?php if (!empty($products)) : ?>
         <div class="subtotal">
             <h3>Cart Totals</h3>
-            <table>
+            <table style="margin-bottom: 30px;">
                 <tr>
                     <td>Total Items</td>
                     <td><?php echo $totalQuantity ?></td>
@@ -73,7 +145,7 @@ include('./partials/header.php');
                     <td><strong>$ <?php echo number_format($totalPrice) ?></strong></td>
                 </tr>
             </table>
-            <button class="normal">Proceed to checkout</button>
+            <a class="checkout" href="checkout" class="normal">PROCEED TO CHECKOUT</a>
         </div>
     <?php endif; ?>
 </section>
@@ -85,6 +157,13 @@ include('./partials/footer.php');
 ?>
 
 <style>
+    .checkout {
+        background-color: #088178;
+        color: #fff;
+        text-decoration: none;
+        padding: 12px 20px;
+    }
+
     .icon {
         cursor: pointer;
         color: #088178;
