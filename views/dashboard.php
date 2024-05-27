@@ -1,21 +1,40 @@
 <?php
 
-session_start();
+include('./config/session.php');
 include('./partials/header.php');
 
-if (isset($_SESSION['user'])) {
-    $user = $_SESSION['user'];
-    echo $user['user_id'];
-} else {
-    echo 'no user';
-}
-
 ?>
 
-<h2>Dashboard Page</h2>
 
-<?php
+<div class="dashboard-container">
 
-include('./partials/footer.php');
+    <?php include('./partials/sidebar.php'); ?>
 
-?>
+    <div class="content">
+        <button id="menuBtn" class="menu-btn">&#9776;</button>
+        <div class="welcome">
+            <h2>Your Dashboard</h2>
+            <p>Welcome, <?php echo $user['username'] ?> <?php echo $user['is_admin'] == 'true' ? '(admin panel)!' : '' ?></p>
+        </div>
+    </div>
+</div>
+<?php include('./partials/footer.php'); ?>
+
+<style>
+    .dashboard-container .menu-btn {
+        font-size: 30px;
+        margin-top: 10px;
+    }
+
+    .dashboard-container .content {
+        display: flex;
+        align-items: start;
+        padding: 0 100px;
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .dashboard-container .content .welcome {
+        padding: 10px 30px;
+    }
+</style>

@@ -6,6 +6,10 @@ session_start();
 include('./partials/header.php');
 include('./config/db.php');
 
+if (isset($_SESSION['user'])) {
+    header('Location: dashboard');
+}
+
 $firstName = $lastName = $email = $password = $confirmPassword = '';
 $errors = [];
 

@@ -1,5 +1,8 @@
 <?php
 
+// Start session
+session_start();
+
 include('./partials/header.php');
 include('./config/db.php');
 

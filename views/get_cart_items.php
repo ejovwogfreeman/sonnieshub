@@ -53,6 +53,7 @@
 
 session_start(); // Ensure session is started
 include('./config/db.php');
+include('./config/session.php');
 
 if (!isset($_SESSION['user'])) {
     die("User not logged in");

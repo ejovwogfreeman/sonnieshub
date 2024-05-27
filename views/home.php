@@ -1,7 +1,9 @@
 <?php
 
+// Start session
+session_start();
+
 include('./partials/header.php');
-include('./config/session.php'); // Ensure this includes session_start()
 include('./config/db.php');
 include('./utils/random_id.php');
 
