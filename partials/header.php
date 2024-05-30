@@ -23,34 +23,74 @@
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
 
     <!-- custom css file link -->
-    <link rel="stylesheet" href="css/style.css">
+    <?php
+    // Get the current URL
+    $url = $_SERVER['REQUEST_URI'];
+
+    // // Check if 'admin' is in the URL
+    // if (strpos($url, 'admin') !== false) {
+    //     echo '<link rel="stylesheet" href="../css/style.css">';
+    // } else {
+    //     echo '<link rel="stylesheet" href="../css/style.css">';
+    // }
+
+    $pattern = '/\/profile\/[0-9a-zA-Z]+$/';
+
+    if (strpos($url, 'admin') !== false) {
+        echo '<link rel="stylesheet" href="../css/style.css">';
+    } else {
+        // Define the pattern to match '/profile/' followed by an ID
+
+        if (preg_match($pattern, $url)) {
+            echo '<link rel="stylesheet" href="../css/style.css">';
+        } else {
+            echo '<link rel="stylesheet" href="css/style.css">';
+        }
+    }
+
+    ?>
+
 
 </head>
 
 <body>
 
     <section id="header">
-        <a href="/sonnieshub"><img src="images/logo.png" class="logo" alt="" style="border: none; width: 100px"></a>
+        <?php
+        // Get the current URL
+        $url = $_SERVER['REQUEST_URI'];
+
+        if (strpos($url, 'admin') !== false) {
+            echo '<a href="/sonnieshub"><img src="../images/logo.png" class="logo" alt="" style="border: none; width: 100px"></a>';
+        } else {
+            if (preg_match($pattern, $url)) {
+                echo '<a href="/sonnieshub"><img src="../images/logo.png" class="logo" alt="" style="border: none; width: 100px"></a>';
+            } else {
+                echo '<a href="/sonnieshub"><img src="images/logo.png" class="logo" alt="" style="border: none; width: 100px"></a>';
+            }
+        }
+
+        ?>
         <div>
             <ul id="navbar">
-                <li><a class="active" href="/sonnieshub">Home</a></li>
-                <li><a href="shop">Shop</a></li>
-                <li><a href="blog">Blog</a></li>
-                <li><a href="about">About</a></li>
-                <li><a href="contact">Contact</a></li>
+                <li><a class="active" href="/sonnieshub/">Home</a></li>
+                <li><a href="/sonnieshub/shop">Shop</a></li>
+                <li><a href="/sonnieshub/blog">Blog</a></li>
+                <li><a href="/sonnieshub/about">About</a></li>
+                <li><a href="/sonnieshub/contact">Contact</a></li>
                 <?php if (!isset($_SESSION['user'])) : ?>
-                    <li><a href="register">Register</a></li>
-                    <li><a href="login">Login</a></li>
+                    <li><a href="/sonnieshub/register">Register</a></li>
+                    <li><a href="/sonnieshub/login">Login</a></li>
                 <?php else : ?>
-                    <li><a href="dashboard">Dashboard</a></li>
-                    <li><a href="logout">Logout</a></li>
-                    <li id="lg-bag"><a href="cart"><i class="far fa-shopping-bag"></i></a></li>
+                    <li><a href="/sonnieshub/dashboard">Dashboard</a></li>
+                    <li><a href="/sonnieshub/logout">Logout</a></li>
+                    <li id="lg-bag"><a href="/sonnieshub/cart"><i class="far fa-shopping-bag"></i></a></li>
                 <?php endif ?>
                 <a href="#" id="close"><i class="far fa-times"></i></a>
             </ul>
         </div>
         <div id="mobile">
-            <a href="cart"><i class="far fa-shopping-bag"></i></a>
-            <i id="bar" class="fas fa-outdent"></i>
+            <a href="/sonnieshub/cart"><i class="far fa-shopping-bag"></i></a>
+            <a href="#" id="bar"><i id="bar" class="fas fa-outdent"></i></a>
         </div>
     </section>

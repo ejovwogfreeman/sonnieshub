@@ -1,6 +1,16 @@
 <footer class="section-p1">
     <div class="col">
-        <img class="logo" src="images/logo.png" alt="" style="width: 150px">
+        <?php
+        if (strpos($url, 'admin') !== false) {
+            echo '<a href="/sonnieshub"><img src="../images/logo.png" class="logo" alt="" style="border: none; width: 100px"></a>';
+        } else {
+            if (preg_match($pattern, $url)) {
+                echo '<a href="/sonnieshub"><img src="../images/logo.png" class="logo" alt="" style="border: none; width: 100px"></a>';
+            } else {
+                echo '<a href="/sonnieshub"><img src="images/logo.png" class="logo" alt="" style="border: none; width: 100px"></a>';
+            }
+        }
+        ?>
         <h4>Contact</h4>
         <p><strong>Address:</strong> Lahore, Pakistan - 54840</p>
         <p><strong>Phone:</strong> +92-321-4655990</p>
@@ -32,23 +42,19 @@
         <a href="#">Track My Order</a>
         <a href="#">Help</a>
     </div>
-    <div class="col install">
-        <h4>Install App</h4>
-        <p>From App Store or Google Play</p>
-        <div class="row">
-            <img src="images/pay/app.jpg" alt="">
-            <img src="images/pay/play.jpg" alt="">
-        </div>
-        <p>Secured Payment Gateway</p>
-        <img src="images/pay/pay.png" alt="">
-    </div>
     <div class="copyright">
         <p>SonniesHub | All Rights Reserved | &#169; 2023</p>
     </div>
 </footer>
 
-<!-- javascript script file link -->
-<script src="js/script.js"></script>
+<?php
+// Check if 'admin' is in the URL
+if (strpos($url, 'admin') !== false) {
+    echo '<script src="../js/script.js"></script>';
+} else {
+    echo '<script src="js/script.js"></script>';
+}
+?>
 </body>
 
 </html>

@@ -1,10 +1,9 @@
 <?php
 
-
-include('admincheck.php');
-include('../config/db.php');
-include('../partials/header.php');
-include('../utils/random_id.php');
+include('./config/session.php');
+include('./config/db.php');
+include('./partials/header.php');
+include('./utils/random_id.php');
 
 if (isset($_SESSION['user'])) {
     $userId = $_SESSION['user']['user_id'];
@@ -24,11 +23,11 @@ if (isset($_SESSION['user'])) {
 
 <div class="dashboard-container">
 
-    <?php include('../partials/sidebar.php'); ?>
+    <?php include('./partials/sidebar.php'); ?>
 
     <div class="content">
         <button id="menuBtn" class="menu-btn">&#9776;</button>
-        <h2 class="h2">All Orders</h2>
+        <h2 class="h2">Your Orders</h2>
     </div>
 
     <?php if (!empty($orders)) : ?>
@@ -91,7 +90,7 @@ if (isset($_SESSION['user'])) {
 
 </div>
 
-<?php include('../partials/footer.php'); ?>
+<?php include('./partials/footer.php'); ?>
 
 <style>
     .h2 {

@@ -51,9 +51,9 @@
 //     // echo "User not logged in.";
 // }
 
-session_start(); // Ensure session is started
-include('./config/db.php');
+// session_start(); // Ensure session is started
 include('./config/session.php');
+include('./config/db.php');
 
 if (!isset($_SESSION['user'])) {
     die("User not logged in");

@@ -1,8 +1,8 @@
 <?php
 
 session_start();
-if (isset($_SESSION['user']) && $_SESSION['user'][0]['is_admin'] === "false") {
-    header('Location: /a2z_food/404.php');
+if (isset($_SESSION['user']) && $_SESSION['user']['is_admin'] === "false") {
+    header('Location: /sonnieshub/404.php');
 } else if (!isset($_SESSION['user'])) {
-    header('Location: /a2z_food/login.php');
+    header('Location: /sonnieshub/login.php');
 }

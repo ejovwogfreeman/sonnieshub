@@ -53,7 +53,7 @@
 // $request = array(
 //     'tx_ref' => $transaction_reference,
 //     'amount' => $amount,
-//     'currency' => 'NGN',
+//     'currency' => '$',
 //     'payment_options' => 'card',
 //     'redirect_url' => 'http://localhost/a2z_food/payment_status.php?phoneNum=' . urlencode($phoneNum) . '&shippingAddress=' . urlencode($shippingAddress),
 //     'customer' => array(
@@ -124,7 +124,7 @@
 // $request = array(
 //     'tx_ref' => $transaction_reference,
 //     'amount' => $amount * 100,
-//     'currency' => 'NGN',
+//     'currency' => '$',
 //     'payment_options' => 'card',
 //     'email' => $email,
 //     // 'callback_url' => 'https://food.a2z.com.ng/payment_status.php?phoneNum=' . urlencode($phoneNum) . '&shippingAddress=' . urlencode($shippingAddress),

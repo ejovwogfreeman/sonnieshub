@@ -7,7 +7,7 @@ include('./partials/header.php');
 include('./config/db.php');
 
 if (isset($_SESSION['user'])) {
-    header('Location: dashboard');
+    header('Location: /sonnieshub/dashboard');
 }
 
 $email = $password = '';
