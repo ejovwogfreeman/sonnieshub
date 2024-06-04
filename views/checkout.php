@@ -1,59 +1,94 @@
 <?php
 
-// include('./config/session.php');
-// include('./config/db.php');
 ob_start();
-include('get_cart_items.php');
-include('./partials/header.php');
 
-// Check if a user is logged in
-if (isset($_SESSION['user'])) {
-    $user = $_SESSION['user'];
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
 }
 
-// $cartProducts = isset($_SESSION['cart']) ? $_SESSION['cart'] : [];
-$phoneNum = $shippingAddress  =  $Err = '';
-$counter = 1;
+include('get_cart_items.php'); // Assume this file sets $products, $totalQuantity, $totalPrice
+include('./partials/header.php');
+require_once('./config/db.php'); // Database connection
+include('./utils/random_id.php');
 
-// if (!empty($cartProducts)) {
-//     $totalQuantity = 0;
-//     $totalPrice = 0;
-//     $counter = 1;
+function redirect($url)
+{
+    header('Location: ' . $url);
+    exit();
+}
 
-//     foreach ($cartProducts as $productId => $quantity) {
-//         $totalQuantity += $quantity;
-
-//         $sql = "SELECT * FROM products WHERE product_id = $productId";
-//         $result = mysqli_query($conn, $sql);
-//         $product = mysqli_fetch_assoc($result);
-
-//         $totalPrice += $quantity * $product['product_price'];
-//     }
-
-//     $productIds = array_keys($cartProducts);
-//     $productIdsString = implode(',', $productIds);
-//     $sql = "SELECT * FROM products WHERE product_id IN ($productIdsString)";
-//     $result = mysqli_query($conn, $sql);
-//     $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
-// include()
-
+$errors = [];
+$phoneNum = $shippingAddress = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Validate phone number
     if (empty($_POST['phoneNum'])) {
-        $Err = 'PLEASE ENTER A PHONE NUMBER';
+        $errors['phoneNum'] = 'Phone number is required.';
     } else {
         $phoneNum = htmlspecialchars($_POST['phoneNum']);
-        if (empty($_POST['shippingAddress'])) {
-            $Err = 'PLEASE ENTER A SHIPPING ADDRESS';
+    }
+
+    // Validate shipping address
+    if (empty($_POST['shippingAddress'])) {
+        $errors['shippingAddress'] = 'Shipping address is required.';
+    } else {
+        $shippingAddress = htmlspecialchars($_POST['shippingAddress']);
+    }
+
+    if (empty($errors)) {
+        // Proceed with the order processing
+        $user = $_SESSION['user'];
+        $userId = $user['user_id'];
+        $orderId = generateRandomId();
+        $dateOrdered = date('Y-m-d H:i:s');
+
+        // Create a new order
+        $createOrderQuery = "INSERT INTO orders (order_id, user_id, phone_number, shipping_address, total_price, status, date_ordered) VALUES ('$orderId', '$userId', '$phoneNum', '$shippingAddress', $totalPrice, 'pending', '$dateOrdered')";
+        $resultCreateOrder = mysqli_query($conn, $createOrderQuery);
+
+        if (!$resultCreateOrder) {
+            $_SESSION['msg'] = "Error creating order: " . mysqli_error($conn);
+            redirect('/sonnieshub/checkout');
+        }
+
+        // Insert items from the cart into the order_items table
+        foreach ($products as $singleProduct) {
+            $orderItemsId = generateRandomId();
+            $productId = $singleProduct['product_id'];
+            $productName = $singleProduct['product_name'];
+            $quantity = $singleProduct['quantity'];
+            $pricePaid = $singleProduct['price_paid'];
+
+            $sqlOrderItem = "INSERT INTO order_items (order_item_id, order_id, product_id, product_name, quantity, price_paid) VALUES ('$orderItemsId', '$orderId', '$productId', '$productName', '$quantity', '$pricePaid')";
+            if (!mysqli_query($conn, $sqlOrderItem)) {
+                $_SESSION['msg'] = "Error inserting order item: " . mysqli_error($conn);
+                redirect('/sonnieshub/checkout');
+            }
+        }
+
+        // Update the cart status to 'closed'
+        $cartQuery = "SELECT cart_id FROM carts WHERE user_id = '$userId' AND status = 'open'";
+        $cartResult = mysqli_query($conn, $cartQuery);
+
+        if ($cartResult && mysqli_num_rows($cartResult) > 0) {
+            $cart = mysqli_fetch_assoc($cartResult);
+            $cartId = $cart['cart_id'];
+
+            if (mysqli_query($conn, "UPDATE carts SET status = 'closed' WHERE cart_id = '$cartId'")) {
+                // Store total items and total price in session
+                $_SESSION['totalItems'] = $totalQuantity;
+                $_SESSION['totalPrice'] = $totalPrice;
+
+                // Redirect to the payment page
+                redirect('/sonnieshub/payment');
+            } else {
+                $errors['database'] = "Error updating cart status.";
+            }
         } else {
-            $shippingAddress = htmlspecialchars($_POST['shippingAddress']);
-            header("Location: process_payment.php?phoneNum=" . urlencode($phoneNum) . "&shippingAddress=" . urlencode($shippingAddress));
+            $errors['cart'] = "You don't have an open cart.";
         }
     }
 }
-
-$email = '';
 
 ob_end_flush();
 
@@ -61,7 +96,7 @@ ob_end_flush();
 
 <section id="page-header" class="about-header">
     <h2>#checkout</h2>
-    <p>Add your coupon code & SAVE upto 70%!</p>
+    <p>Add your coupon code & SAVE up to 70%!</p>
 </section>
 
 <div class="flex-container">
@@ -80,16 +115,15 @@ ob_end_flush();
             unset($_SESSION['msg']); // Clear the message after displaying it
         }
         ?>
-        <?php echo isset($err) ? "<div class='error'>" . $err . "</div>" : ""; ?>
         <div class="input-container">
-            <label for="email" class="form-label" placeholder="Enter email">Phone Number</label>
-            <input type="text" id="email" name="email" value="<?php echo $email; ?>" class="<?php echo isset($errors['email']) ? 'is-invalid' : ''; ?>">
-            <?php echo isset($errors['email']) ? "<div class='invalid-feedback'>" . $errors['email'] . "</div>" : ""; ?>
+            <label for="phoneNum" class="form-label">Phone Number</label>
+            <input type="text" id="phoneNum" name="phoneNum" value="<?php echo htmlspecialchars($phoneNum); ?>" class="<?php echo isset($errors['phoneNum']) ? 'is-invalid' : ''; ?>">
+            <?php echo isset($errors['phoneNum']) ? "<div class='invalid-feedback'>" . $errors['phoneNum'] . "</div>" : ""; ?>
         </div>
         <div class="input-container">
-            <label for="email" class="form-label" placeholder="Enter email">Address/Location</label>
-            <input type="text" id="email" name="email" value="<?php echo $email; ?>" class="<?php echo isset($errors['email']) ? 'is-invalid' : ''; ?>">
-            <?php echo isset($errors['email']) ? "<div class='invalid-feedback'>" . $errors['email'] . "</div>" : ""; ?>
+            <label for="shippingAddress" class="form-label">Address/Location</label>
+            <input type="text" id="shippingAddress" name="shippingAddress" value="<?php echo htmlspecialchars($shippingAddress); ?>" class="<?php echo isset($errors['shippingAddress']) ? 'is-invalid' : ''; ?>">
+            <?php echo isset($errors['shippingAddress']) ? "<div class='invalid-feedback'>" . $errors['shippingAddress'] . "</div>" : ""; ?>
         </div>
         <div>
             <button class="btn" type="submit">CHECKOUT</button>
@@ -98,32 +132,28 @@ ob_end_flush();
     <div class="div">
         <section id="cart" class="section-p1">
             <?php if (!empty($products)) : ?>
-                <?php if (!empty($products)) : ?>
-                    <table width="100%">
-                        <thead>
+                <table width="100%">
+                    <thead>
+                        <tr>
+                            <td>Product</td>
+                            <td>Price</td>
+                            <td>Quantity</td>
+                            <td>Subtotal</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($products as $product) : ?>
                             <tr>
-                                <td>Product</td>
-                                <td>Price</td>
-                                <td>Quantity</td>
-                                <td>Subtotal</td>
+                                <td><?php echo htmlspecialchars($product['product_name']) ?></td>
+                                <td>$ <?php echo number_format($product['product_price'], 2) ?></td>
+                                <td>
+                                    <span><?php echo $product['quantity'] ?></span>
+                                </td>
+                                <td>$ <?php echo number_format($product['quantity'] * $product['product_price'], 2) ?></td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($products as $product) : ?>
-                                <tr>
-                                    <td><?php echo $product['product_name'] ?></td>
-                                    <td>$ <?php echo number_format($product['product_price']) ?></td>
-                                    <td>
-                                        <span><?php echo $product['quantity'] ?></span>
-                                    </td>
-                                    <td>$ <?php echo number_format($product['quantity'] * $product['product_price']) ?></td>
-                                </tr>
-                            <?php endforeach ?>
-                        </tbody>
-                    </table>
-                <?php else : ?>
-                    <p>No products found in the cart.</p>
-                <?php endif ?>
+                        <?php endforeach ?>
+                    </tbody>
+                </table>
                 <div class="subtotal" style="margin-top: 30px">
                     <h3>Cart Totals</h3>
                     <table>
@@ -133,11 +163,12 @@ ob_end_flush();
                         </tr>
                         <tr>
                             <td><strong>Total Price</strong></td>
-                            <td><strong>$ <?php echo number_format($totalPrice) ?></strong></td>
+                            <td><strong>$ <?php echo number_format($totalPrice, 2) ?></strong></td>
                         </tr>
                     </table>
-                    <button class="normal">PROCEED TO CHECKOUT</button>
                 </div>
+            <?php else : ?>
+                <p>No products found in the cart.</p>
             <?php endif; ?>
         </section>
     </div>
@@ -189,7 +220,6 @@ ob_end_flush();
     input[type="password"]:focus {
         border-color: #088178;
         box-shadow: 0px 0px 5px rgba(8, 129, 120, 0.5);
-        /* Light green box shadow on focus */
         outline: none;
     }
 
@@ -199,7 +229,6 @@ ob_end_flush();
         margin-top: 10px;
         border-color: red;
         box-shadow: 0px 0px 5px rgba(255, 0, 0, 0.5);
-        /* Light red box shadow on error */
     }
 
     .invalid-feedback {
@@ -217,16 +246,6 @@ ob_end_flush();
         border-radius: 3px;
     }
 
-    .success-message {
-        color: #088178;
-        margin-top: 20px;
-    }
-
-    .error-message {
-        color: red;
-        margin-top: 20px;
-    }
-
     .btn {
         background-color: #088178;
         border: 1px solid #088178;
@@ -240,18 +259,6 @@ ob_end_flush();
     .btn:hover {
         background-color: #06695a;
         border-color: #06695a;
-    }
-
-    .bottom-box {
-        margin-top: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    .bottom-box p,
-    .bottom-box a {
-        font-size: 14px;
     }
 
     .checkout-container {

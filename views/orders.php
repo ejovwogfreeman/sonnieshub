@@ -1,7 +1,7 @@
 <?php
 
 include('./config/session.php');
-include('./config/db.php');
+// require_once('./config/db.php');
 include('./partials/header.php');
 include('./utils/random_id.php');
 

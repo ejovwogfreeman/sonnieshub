@@ -1,7 +1,7 @@
 <?php
 // Include necessary files and initialize session
 include('admincheck.php');
-include('./config/db.php');
+// include('./config/db.php');
 include('./partials/header.php');
 include('./utils/random_id.php');
 
@@ -41,32 +41,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $productPrice = htmlspecialchars($_POST["productPrice"]);
     }
 
-    // // Validate product image
-    // if (isset($_FILES["productImage"]) && $_FILES["productImage"]["error"] == 0) {
-    //     $allowed = ["jpg" => "image/jpg", "jpeg" => "image/jpeg", "webp" => "image/webp", "png" => "image/png", "gif" => "image/gif"];
-    //     $filename = $_FILES["productImage"]["name"];
-    //     $filetype = $_FILES["productImage"]["type"];
-    //     $filesize = $_FILES["productImage"]["size"];
-
-    //     // Verify file extension
-    //     $ext = pathinfo($filename, PATHINFO_EXTENSION);
-    //     if (!array_key_exists($ext, $allowed)) {
-    //         $errors['productImage'] = 'Please select a valid file format.';
-    //     }
-
-    //     // // Verify file size - 5MB maximum
-    //     // $maxsize = 5 * 1024 * 1024;
-    //     // if ($filesize > $maxsize) {
-    //     //     $errors['productImage'] = 'File size is larger than the allowed limit.';
-    //     // }
-
-    //     // Verify MIME type of the file
-    //     if (in_array($filetype, $allowed)) {
-    //         $newFilename = generateRandomId() . "." . $ext;
-    //         move_uploaded_file($_FILES["productImage"]["tmp_name"], "uploads/" . $newFilename);
-    //     } else {
-    //         $errors['productImage'] = 'There was a problem uploading your file. Please try again.';
-    //     }
     $imageFileType = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
     $allowedExtensions = ['png', 'jpg', 'jpeg', 'webp'];
 
@@ -151,7 +125,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
         <div class="input-container">
             <label for="image" class="form-label" placeholder="Upload product image">Product Image</label>
-            <input type="file" name="image" id="image" accept="image/png, image/jpeg, image/webp class=" <?php echo isset($errors['productImage']) ? 'is-invalid' : ''; ?>">
+            <input type="file" name="image" id="image" accept="image/png, image/jpeg, image/webp" class="<?php echo isset($errors['productImage']) ? 'is-invalid' : ''; ?>">
             <?php echo isset($errors['productImage']) ? "<div class='invalid-feedback'>" . $errors['productImage'] . "</div>" : ""; ?>
         </div>
         <div>

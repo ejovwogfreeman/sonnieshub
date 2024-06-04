@@ -1,10 +1,10 @@
 <?php
 
 // Start session
-session_start();
+// require_oncesession_start();
 
 include('./partials/header.php');
-include('./config/db.php');
+// include('./config/db.php');
 include('./utils/random_id.php');
 
 if (isset($_SESSION['user'])) {
@@ -14,10 +14,13 @@ if (isset($_SESSION['user'])) {
 
 
 // Fetch products from the database
-$sql = "SELECT * FROM products";
-$result = mysqli_query($conn, $sql);
+$sqlGroc = "SELECT * FROM products WHERE product_category = 'groceries'";
+$result = mysqli_query($conn, $sqlGroc);
+$productsGroc = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-$products = mysqli_fetch_all($result, MYSQLI_ASSOC);
+$sqlHair = "SELECT * FROM products WHERE product_category = 'hair'";
+$result = mysqli_query($conn, $sqlHair);
+$productsHair = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 function showFlyingAlert($message, $className)
 {
@@ -132,7 +135,7 @@ if (isset($_SESSION['msg'])) {
     <h2>Featured Products</h2>
     <p>Summer Collection New Modern Design</p>
     <div class="pro-container">
-        <?php foreach ($products as $product) : ?>
+        <?php foreach ($productsGroc as $product) : ?>
             <div class="pro">
                 <!-- Make sure to use the correct column name for the image path -->
                 <?php
@@ -146,14 +149,14 @@ if (isset($_SESSION['msg'])) {
                     echo "Unable to determine image type.";
                 }
                 ?>
-                <img src="<?php echo $img_src ?>" alt="">
+                <img src="<?php echo $img_src ?>" alt="" style='width: 100%; height: 300px; object-fit: contain'>
                 <div class="des">
                     <span><?php echo $product['product_category']; ?></span>
                     <h5><?php echo $product['product_name']; ?></h5>
                     <p><?php echo $product['product_description'] ?></p>
                     <h4>$<?php echo $product['product_price']; ?></h4>
                 </div>
-                <a href=<?php echo "add_to_cart?id={$product['product_id']}" ?>><i class="fas fa-shopping-cart cart"></i></a>
+                <a href=<?php echo "add_to_cart/{$product['product_id']}" ?>><i class="fas fa-shopping-cart cart"></i></a>
             </div>
         <?php endforeach; ?>
     </div>
@@ -169,7 +172,7 @@ if (isset($_SESSION['msg'])) {
     <h2>Featured Products</h2>
     <p>Summer Collection New Modern Design</p>
     <div class="pro-container">
-        <?php foreach ($products as $product) : ?>
+        <?php foreach ($productsHair as $product) : ?>
             <div class="pro">
                 <!-- Make sure to use the correct column name for the image path -->
                 <?php
@@ -183,14 +186,14 @@ if (isset($_SESSION['msg'])) {
                     echo "Unable to determine image type.";
                 }
                 ?>
-                <img src="<?php echo $img_src ?>" alt="">
+                <img src="<?php echo $img_src ?>" alt="" style='width: 100%; height: 300px; object-fit: contain'>
                 <div class="des">
                     <span><?php echo $product['product_category']; ?></span>
                     <h5><?php echo $product['product_name']; ?></h5>
                     <p><?php echo $product['product_description'] ?></p>
                     <h4>$<?php echo $product['product_price']; ?></h4>
                 </div>
-                <a href=<?php echo "add_to_cart?id={$product['product_id']}" ?>><i class="fas fa-shopping-cart cart"></i></a>
+                <a href=<?php echo "add_to_cart/{$product['product_id']}" ?>><i class="fas fa-shopping-cart cart"></i></a>
             </div>
         <?php endforeach; ?>
     </div>

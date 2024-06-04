@@ -1,10 +1,13 @@
 <?php
 
 // Start session
-session_start();
+// Check if a session is already started before calling session_start()
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 include('./partials/header.php');
-include('./config/db.php');
+require_once('./config/db.php');
 
 if (isset($_SESSION['user'])) {
     header('Location: dashboard');

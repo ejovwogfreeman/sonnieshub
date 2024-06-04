@@ -1,6 +1,11 @@
 <?php
 
-include('./config/session.php');
+// include('./config/session.php');
+session_start();
+if (isset($_SESSION['user']) === false) {
+    header('Location: /sonnieshub/login');
+}
+
 include('./config/db.php');
 include('./utils/random_id.php');
 
@@ -16,7 +21,8 @@ if (isset($_SESSION['user'])) {
     $userId = $user['user_id'];
 }
 
-$productId = isset($_GET['id']) ? $_GET['id'] : null;
+// $productId = isset($_GET['id']) ? $_GET['id'] : null;
+$productId = isset($productId) ? $productId : null;
 
 $randomId = generateRandomId();
 $createdAt = date('Y-m-d H:i:s');

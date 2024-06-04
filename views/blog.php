@@ -1,9 +1,24 @@
 <?php
-
 // Start session
-session_start();
-
 include('./partials/header.php');
+require_once('./config/db.php');
+
+if (isset($_SESSION['user'])) {
+    header('Location: /sonnieshub/dashboard');
+}
+
+include('./utils/random_id.php');
+
+if (isset($_SESSION['user'])) {
+    $user = $_SESSION['user'];
+    $userId = $user['user_id'];
+}
+
+// Fetch blogs from the database
+$sql = "SELECT * FROM blogs";
+$result = mysqli_query($conn, $sql);
+
+$blogs = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 ?>
 
@@ -13,71 +28,30 @@ include('./partials/header.php');
 </section>
 
 <section id="blog">
-    <div class="blog-box">
-        <div class="blog-img">
-            <img src="images/blog/b1.jpg" alt="">
+    <?php foreach ($blogs as $blog) : ?>
+        <div class="blog-box">
+            <div class="blog-img">
+                <?php
+                $imageData = $blog['blog_image'];
+                $imageInfo = getimagesizefromstring($imageData);
+
+                if ($imageInfo !== false) {
+                    $imageFormat = $imageInfo['mime'];
+                    $img_src = "data:$imageFormat;base64," . base64_encode($imageData);
+                } else {
+                    echo "Unable to determine image type.";
+                }
+                ?>
+                <img src="<?php echo $img_src ?>" alt="">
+            </div>
+            <div class="blog-details">
+                <h4><?php echo $blog['blog_title']; ?></h4>
+                <p><?php echo $blog['blog_content']; ?></p>
+                <a href="#">CONTINUE READING</a>
+            </div>
+            <h1><?php echo date('d M Y', strtotime($blog['created_at'])); ?></h1>
         </div>
-        <div class="blog-details">
-            <h4>The Cotton-Jersey Zip-Up Hoodie</h4>
-            <p>Kickstarter man braid godard coloring book. Raclette waistcoat selfies
-                yr wolf chartreuse hexagon irony, godard...
-            </p>
-            <a href="#">CONTINUE READING</a>
-        </div>
-        <h1>13/01</h1>
-    </div>
-    <div class="blog-box">
-        <div class="blog-img">
-            <img src="images/blog/b2.jpg" alt="">
-        </div>
-        <div class="blog-details">
-            <h4>How to Style a Quiff</h4>
-            <p>Kickstarter man braid godard coloring book. Raclette waistcoat selfies
-                yr wolf chartreuse hexagon irony, godard...
-            </p>
-            <a href="#">CONTINUE READING</a>
-        </div>
-        <h1>13/04</h1>
-    </div>
-    <div class="blog-box">
-        <div class="blog-img">
-            <img src="images/blog/b3.jpg" alt="">
-        </div>
-        <div class="blog-details">
-            <h4>Must-Have Skater Girl Items</h4>
-            <p>Kickstarter man braid godard coloring book. Raclette waistcoat selfies
-                yr wolf chartreuse hexagon irony, godard...
-            </p>
-            <a href="#">CONTINUE READING</a>
-        </div>
-        <h1>12/01</h1>
-    </div>
-    <div class="blog-box">
-        <div class="blog-img">
-            <img src="images/blog/b4.jpg" alt="">
-        </div>
-        <div class="blog-details">
-            <h4>Runway-Inspired Trends</h4>
-            <p>Kickstarter man braid godard coloring book. Raclette waistcoat selfies
-                yr wolf chartreuse hexagon irony, godard...
-            </p>
-            <a href="#">CONTINUE READING</a>
-        </div>
-        <h1>16/01</h1>
-    </div>
-    <div class="blog-box">
-        <div class="blog-img">
-            <img src="images/blog/b6.jpg" alt="">
-        </div>
-        <div class="blog-details">
-            <h4>AW20 Menswear Trends</h4>
-            <p>Kickstarter man braid godard coloring book. Raclette waistcoat selfies
-                yr wolf chartreuse hexagon irony, godard...
-            </p>
-            <a href="#">CONTINUE READING</a>
-        </div>
-        <h1>10/03</h1>
-    </div>
+    <?php endforeach; ?>
 </section>
 
 <section id="pagination" class="section-p1">
@@ -97,8 +71,4 @@ include('./partials/header.php');
     </div>
 </section>
 
-<?php
-
-include('./partials/footer.php');
-
-?>
+<?php include('./partials/footer.php'); ?>

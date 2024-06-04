@@ -1,10 +1,10 @@
 <?php
 
 // Start session
-session_start();
+// session_start();
 
 include('./partials/header.php');
-include('./config/db.php');
+require_once('./config/db.php');
 
 if (isset($_SESSION['user'])) {
     header('Location: /sonnieshub/dashboard');

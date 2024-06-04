@@ -64,9 +64,11 @@ if (isset($_SESSION['user'])) {
     $email = $user['email'];
     $phoneNumber = $user['phone_number'];
     $address = $user['address'];
+    $birthday = $user['date_of_birth'];
+    $imageData = $user['profile_picture'];
 
     // Check if the logged-in user is viewing their own profile
-    $headerText = ($userId == $profileUserId) ? "YOUR PROFILE" : "$userName's Profile";
+    $headerText = ($userId == $profileUserId) ? "Your Profile" : "$userName's Profile";
 }
 
 ob_end_flush();
@@ -83,9 +85,8 @@ ob_end_flush();
         <h2 class="h2"><?php echo $headerText; ?></h2>
     </div>
 
-    <div class='border rounded p-3 pt-5 ms-3 profile' style="flex: 3;">
+    <div class='profile'>
         <?php
-        $imageData = $user['profile_picture'];
 
         if (!empty($imageData)) {
             $imageInfo = getimagesizefromstring($imageData);
@@ -101,7 +102,7 @@ ob_end_flush();
             $img_src = "images/default.jpg";
         }
         ?>
-        <img class="profile-image" src="<?php echo $img_src; ?>" alt="<?php echo $user['username']; ?>" width='100px'>
+        <img class="profile-image" src="<?php echo $img_src; ?>" alt="<?php echo $user['username']; ?>">
         <div class="mt-3">
             <strong class="d-block mt-2">First Name:</strong>
             <span class="d-block"><?php echo $firstName ?></span>
@@ -120,6 +121,9 @@ ob_end_flush();
             <hr>
             <strong class="d-block mt-2">Address:</strong>
             <span class="d-block"><?php echo $address ?></span>
+            <hr>
+            <strong class="d-block mt-2">Birthday:</strong>
+            <span class="d-block"><?php echo $birthday ?></span>
         </div>
     </div>
 
@@ -217,6 +221,28 @@ ob_end_flush();
         color: #fff;
     }
 
+    .profile {
+        width: 70%;
+        margin: auto;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        padding: 30px;
+    }
+
+    .profile img {
+        width: 100px;
+        height: 100px;
+        margin: auto;
+        display: block;
+        border: 3px solid #088178;
+        border-radius: 50%;
+        margin-bottom: 30px;
+    }
+
+    .profile hr {
+        margin: 10px 0px 20px 0px;
+    }
+
     @media screen and (max-width: 1200px) {
         .table table {
             width: 1000px;
@@ -227,6 +253,11 @@ ob_end_flush();
         .dashboard-container {
             padding: 20px;
         }
+    }
 
+    @media screen and (max-width: 477px) {
+        .profile {
+            width: 100%;
+        }
     }
 </style>
