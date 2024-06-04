@@ -1,12 +1,20 @@
 <?php
 
-require_once('./views/get_cart_items.php');
+// require_once('../views/get_cart_items.php');
 // include('./partials/header.php');
 
 // if (isset($_SESSION['user'])) {
 //     $user = $_SESSION['user'];
 //     $userId = $user['user_id'];
 // }
+
+if (strpos($_SERVER['REQUEST_URI'], 'admin') !== false) {
+    // include('../views/get_cart_items.php');
+} else {
+    require_once('./views/get_cart_items.php');
+}
+
+
 
 ?>
 
@@ -53,7 +61,7 @@ require_once('./views/get_cart_items.php');
             echo '<a href="/sonnieshub"><img src="../images/logo.png" class="logo" alt="" style="border: none; width: 100px"></a>';
         } else {
             if (preg_match($pattern, $url)) {
-                echo '<a href="/sonnieshub"><img src="../images/logo.png" class="logo" alt="" style="border: none; width: 100px"></a>';
+                echo '<a href="/sonnieshub"><img src="/images/logo.png" class="logo" alt="" style="border: none; width: 100px"></a>';
             } else {
                 echo '<a href="/sonnieshub"><img src="images/logo.png" class="logo" alt="" style="border: none; width: 100px"></a>';
             }

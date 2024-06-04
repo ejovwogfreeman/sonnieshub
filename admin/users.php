@@ -11,9 +11,9 @@ if (isset($_SESSION['user'])) {
     $username = $user['username'];
 
     // Fetch all orders of the user from the database
-    $sql = "SELECT * FROM orders ORDER BY date_ordered DESC";
+    $sql = "SELECT * FROM users ORDER BY date_joined DESC";
     $result = mysqli_query($conn, $sql);
-    $orders = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    $users = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
     $counter = 1;
 }
@@ -30,50 +30,46 @@ if (isset($_SESSION['user'])) {
         <h2 class="h2">All Users</h2>
     </div>
 
-    <?php if (!empty($orders)) : ?>
+    <?php if (!empty($users)) : ?>
         <?php
         // Group orders by month
-        $groupedOrders = [];
-        foreach ($orders as $order) {
-            $month = date('F Y', strtotime($order['date_ordered']));
-            $groupedOrders[$month][] = $order;
+        $groupedUsers = [];
+        foreach ($users as $user) {
+            $month = date('F Y', strtotime($user['date_joined']));
+            $groupedUsers[$month][] = $user;
         }
         ?>
 
-        <?php foreach ($groupedOrders as $month => $monthOrders) : ?>
+        <?php foreach ($groupedUsers as $month => $monthOrders) : ?>
             <h4 class="h4"><?php echo $month; ?></h4>
             <div class="table">
                 <table>
                     <thead>
                         <tr>
                             <th scope="col">S/N</th>
-                            <th scope="col">SHIPPING ADDRESS</th>
-                            <th scope="col">TOTAL PRICE</th>
-                            <th scope="col">DATE ORDERED</th>
-                            <th scope="col">STATUS</th>
-                            <th scope="col">ORDER DETAILS</th>
+                            <th scope="col">USERNAME</th>
+                            <th scope="col">FIRST NAME</th>
+                            <th scope="col">LAST NAME</th>
+                            <th scope="col">EMAIL</th>
+                            <th scope="col">DATE JOINED</th>
+                            <th scope="col">USER DETAILS</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
                         $counter = 1;
                         ?>
-                        <?php foreach ($monthOrders as $order) : ?>
+                        <?php foreach ($monthOrders as $user) : ?>
                             <tr>
                                 <td scope="row" style="font-weight: bold;"><?php echo $counter++ ?></td>
-                                <td><?php echo $order['shipping_address']; ?></td>
-                                <td>$ <?php echo number_format($order['total_price']); ?></td>
-                                <td><?php echo date('M d, Y', strtotime($order['date_ordered'])); ?></td>
-                                <td>
-                                    <small class="<?php
-                                                    echo $order['status'] === 'pending' ? 'bg-warning' : ($order['status'] === 'processing' ? 'bg-info' : ($order['status'] === 'confirmed' ? 'bg-success' : ($order['status'] === 'cancelled' ? 'bg-danger' : '')));
-                                                    ?> text-light p-1 rounded">
-                                        <?php echo ($order['status']); ?>
-                                    </small>
-                                </td>
+                                <td><?php echo $user['username']; ?></td>
+                                <td><?php echo $user['first_name']; ?></td>
+                                <td><?php echo $user['last_name']; ?></td>
+                                <td><?php echo $user['email']; ?></td>
+                                <td><?php echo date('M d, Y', strtotime($user['date_joined'])); ?></td>
                                 <td>
                                     <small class="bg-primary text-light p-1 rounded">
-                                        <a href=<?php echo "/sonnieshub/order_details.php?id={$order['order_id']}" ?> class="text-decoration-none text-light">View Order</a>
+                                        <a href=<?php echo "/sonnieshub/profile/{$user['user_id']}" ?> class="text-decoration-none text-light">View Profile</a>
                                     </small>
                                 </td>
                             </tr>
@@ -85,7 +81,7 @@ if (isset($_SESSION['user'])) {
 
 
     <?php else : ?>
-        <p class="mt-3">No orders found in Order history.</p>
+        <p class="mt-3">No users found in Order history.</p>
     <?php endif; ?>
 
 </div>

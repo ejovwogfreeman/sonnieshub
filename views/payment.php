@@ -107,7 +107,7 @@ ob_end_flush();
                         <td><strong>$ <?php echo number_format($totalPrice, 2) ?></strong></td>
                     </tr>
                 </table>
-                <a href="https://wa.me/+2348164471007" class="paypal-link">
+                <a href="https://api.whatsapp.com/send?phone=447776971422&text=Hello!%20I%20just%20placed%20an%20order%20and%20I%20want%20to%20make%20payment%20" target="_blank" class="paypal-link">
                     <img src="images/paypal.png" alt="" class="paypal">
                 </a>
             </div>

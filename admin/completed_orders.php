@@ -1,7 +1,7 @@
 <?php
 
 include('./config/session.php');
-// require_once('./config/db.php');
+require_once('./config/db.php');
 include('./partials/header.php');
 include('./utils/random_id.php');
 
@@ -11,7 +11,7 @@ if (isset($_SESSION['user'])) {
     $username = $user['username'];
 
     // Fetch all orders of the user from the database
-    $sql = "SELECT * FROM orders WHERE user_id = '$userId' ORDER BY date_ordered DESC";
+    $sql = "SELECT * FROM orders WHERE status = 'completed' ORDER BY date_ordered DESC";
     $result = mysqli_query($conn, $sql);
     $orders = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
@@ -27,7 +27,7 @@ if (isset($_SESSION['user'])) {
 
     <div class="content">
         <button id="menuBtn" class="menu-btn">&#9776;</button>
-        <h2 class="h2">Your Orders</h2>
+        <h2 class="h2">Completed Orders</h2>
     </div>
 
     <?php if (!empty($orders)) : ?>

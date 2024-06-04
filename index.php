@@ -63,6 +63,9 @@ switch ($requestUri) {
     case '/shop':
         require 'views/shop.php';
         break;
+    case '/product':
+        require 'views/single_product.php';
+        break;
     case '/blog':
         require 'views/blog.php';
         break;
@@ -128,6 +131,9 @@ switch ($requestUri) {
     case '/admin/create_blog':
         require 'admin/create_blog.php';
         break;
+    case '/admin/completed_orders':
+        require 'admin/completed_orders.php';
+        break;
     case '/profile':
         require 'views/profile.php';
         break;
@@ -139,9 +145,9 @@ switch ($requestUri) {
         if (preg_match('#^/add_to_cart/([a-zA-Z0-9]+)$#', $requestUri, $matches)) {
             $productId = $matches[1];
             require 'views/add_to_cart.php';
-            // } elseif (preg_match('#^/profile/([a-zA-Z0-9]+)$#', $requestUri, $matches)) {
-            //     $category = $matches[1];
-            //     require 'views/shop.php';
+        } elseif (preg_match('#^/order_details/([a-zA-Z0-9]+)$#', $requestUri, $matches)) {
+            $orderId = $matches[1];
+            require 'views/order_details.php';
         } elseif (preg_match('#^/profile/([a-zA-Z0-9]+)$#', $requestUri, $matches)) {
             $userId = $matches[1];
             require 'views/profile.php';

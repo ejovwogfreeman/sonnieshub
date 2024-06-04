@@ -102,7 +102,7 @@ if (isset($_SESSION['user'])) {
                 <span>Settings</span>
             </a>
         </li>
-        <li>
+        <!-- <li>
             <a href="/sonnieshub/change_password">
                 <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24">
                     <path fill="currentColor" d="M16.75 8.5a1.25 1.25 0 1 0 0-2.5a1.25 1.25 0 0 0 0 2.5" />
@@ -110,7 +110,7 @@ if (isset($_SESSION['user'])) {
                 </svg>
                 <span>Change Password</span>
             </a>
-        </li>
+        </li> -->
     </ul>
 </aside>
 <div id="overlay" class="overlay"></div>
