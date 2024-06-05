@@ -1,29 +1,17 @@
 <?php
 
+
 include('./partials/header.php');
 require_once('./config/db.php');
+include('mail.php');
 
-$firstName = $lastName = $email = $password = $confirmPassword = '';
+$email = '';
 $errors = [];
 
 $emailSubject = 'FORGOT PASSWORD';
 $htmlFilePath = './html_mails/reset_password.html';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Validate first name
-    if (empty($_POST["firstName"])) {
-        $errors['firstName'] = 'First name is required.';
-    } else {
-        $firstName = htmlspecialchars($_POST["firstName"]);
-    }
-
-    // Validate last name
-    if (empty($_POST["lastName"])) {
-        $errors['lastName'] = 'Last name is required.';
-    } else {
-        $lastName = htmlspecialchars($_POST["lastName"]);
-    }
-
     // Validate email
     if (empty($_POST["email"])) {
         $errors['email'] = 'Email is required.';
@@ -33,63 +21,49 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $email = htmlspecialchars($_POST["email"]);
     }
 
-    // Validate password
-    if (empty($_POST["password"])) {
-        $errors['password'] = 'Password is required.';
-    } elseif (strlen($_POST["password"]) < 6) {
-        $errors['password'] = 'Password must be at least 6 characters.';
-    } else {
-        $password = $_POST["password"];
-    }
-
-    // Validate confirm password
-    if (empty($_POST["confirmPassword"])) {
-        $errors['confirmPassword'] = 'Confirm password is required.';
-    } elseif ($_POST["confirmPassword"] !== $_POST["password"]) {
-        $errors['confirmPassword'] = 'Passwords do not match.';
-    } else {
-        $confirmPassword = $_POST["confirmPassword"];
-    }
-
-    // If no errors, proceed to register the user
+    // If no errors, proceed to send the reset password email
     if (empty($errors)) {
-        // Hash the password
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $email = mysqli_real_escape_string($conn, $email);
 
-        // Prepare the SQL statement
-        $sql = "INSERT INTO users (first_name, last_name, email, password) VALUES (?, ?, ?, ?)";
-        $stmt = mysqli_prepare($conn, $sql);
+        $sql_email = "SELECT * FROM users WHERE email = '$email'";
 
-        // Bind parameters
-        mysqli_stmt_bind_param($stmt, "ssss", $firstName, $lastName, $email, $hashedPassword);
+        $sql_email_query = mysqli_query($conn, $sql_email);
 
-        // Execute the statement
-        if (mysqli_stmt_execute($stmt)) {
-            sendEmail($email, $emailSubject, $htmlFilePath, $email);
+        if ($sql_email_query) {
 
-            $message = "An email has been sent to your email \"$email\" with a link to reset your password";
-            echo "<div class='success-message'>Registration successful!</div>";
-            // Clear the form fields
-            $firstName = $lastName = $email = $password = $confirmPassword = '';
-        } else {
-            echo "<div class='error-message'>Error: " . mysqli_stmt_error($stmt) . "</div>";
+            if (mysqli_num_rows($sql_email_query) > 0) {
+
+                $user = mysqli_fetch_assoc($sql_email_query);
+
+                sendEmail($email, $emailSubject, $htmlFilePath, $email);
+
+                $message = "An email has been sent to your email \"$email\" with a link to reset your password";
+
+                $_SESSION['msg'] = $message;
+            } else {
+                $errors['email']  = "A user with this email does not exist";
+            }
+
+            mysqli_free_result($sql_email_query);
         }
-
-        // Close the statement
-        mysqli_stmt_close($stmt);
     }
-
-    // Close the database connection
-    mysqli_close($conn);
 }
 
+// Close the database connection
+mysqli_close($conn);
 ?>
 
 <form id="auth-form" method="POST">
     <div style="text-align: center; margin-bottom: 30px">
         <img src="images/logo.png" alt="" style="width: 150px;">
-        <h3 style="color:#088178">FORGET PASSWORD</h3>
+        <h3 style="color:#088178">FORGOT PASSWORD</h3>
     </div>
+    <?php
+    if (isset($_SESSION['msg'])) {
+        echo "<div class='success-msg'>" . $_SESSION['msg'] . "</div>";
+        unset($_SESSION['msg']); // Clear the message after displaying it
+    }
+    ?>
     <div class="input-container">
         <label for="email" class="form-label">Email</label>
         <input type="email" id="email" name="email" value="<?php echo $email; ?>" class="<?php echo isset($errors['email']) ? 'is-invalid' : ''; ?>">
@@ -104,9 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </form>
 
 <?php
-
 include('./partials/footer.php');
-
 ?>
 
 <style>
@@ -169,6 +141,15 @@ include('./partials/footer.php');
         margin-top: 10px;
         color: red;
         font-size: 14px;
+    }
+
+    .success-msg {
+        padding: 15px;
+        margin-bottom: 20px;
+        color: #0f5132;
+        background-color: #d1e7dd;
+        border: 1px solid #badbcc;
+        border-radius: 3px;
     }
 
     .success-message {
