@@ -1,7 +1,7 @@
 <?php
 
 include('./partials/header.php');
-include('./config/db.php');
+require_once('./config/db.php');
 
 $firstName = $lastName = $email = $password = $confirmPassword = '';
 $errors = [];
