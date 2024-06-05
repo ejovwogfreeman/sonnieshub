@@ -110,7 +110,7 @@ if (isset($_SESSION['msg'])) {
                         }
                         ?>
                         <td>
-                            <a href=<?php echo "remove_from_cart?id={$product['product_id']}" ?> class="icon"><i class="fas fa-times-circle" style="color:black"></i></a>
+                            <a href=<?php echo "remove_from_cart/{$product['product_id']}" ?> class="icon"><i class="fas fa-times-circle" style="color:black"></i></a>
                         </td>
                         <td><img src=<?php echo $img_src ?> alt=""></td>
                         <td><?php echo $product['product_name'] ?></td>

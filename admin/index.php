@@ -66,15 +66,32 @@ if (isset($_SESSION['user'])) {
                                 <td>$ <?php echo number_format($order['total_price']); ?></td>
                                 <td><?php echo date('M d, Y', strtotime($order['date_ordered'])); ?></td>
                                 <td>
-                                    <small class="<?php
-                                                    echo $order['status'] === 'pending' ? 'bg-warning' : ($order['status'] === 'processing' ? 'bg-info' : ($order['status'] === 'confirmed' ? 'bg-success' : ($order['status'] === 'cancelled' ? 'bg-danger' : '')));
-                                                    ?> text-light p-1 rounded">
-                                        <?php echo ($order['status']); ?>
+                                    <small style="background-color: 
+                            <?php
+                            switch ($order['status']) {
+                                case 'pending':
+                                    echo '#FFC107';
+                                    break;
+                                case 'processing':
+                                    echo '#2196F3';
+                                    break;
+                                case 'confirmed':
+                                    echo '#4CAF50';
+                                    break;
+                                case 'cancelled':
+                                    echo '#FF5252';
+                                    break;
+                                default:
+                                    echo '';
+                            }
+                            ?>; color: white; padding: 0.25rem; border-radius: 0.25rem;">
+                                        <?php echo htmlspecialchars($order['status']); ?>
                                     </small>
                                 </td>
+
                                 <td>
                                     <small class="bg-primary text-light p-1 rounded">
-                                        <a href=<?php echo "/sonnieshub/order_details.php?id={$order['order_id']}" ?> class="text-decoration-none text-light">View Order</a>
+                                        <a href=<?php echo "/sonnieshub/order_details/{$order['order_id']}" ?> class="text-decoration-none text-light">View Order</a>
                                     </small>
                                 </td>
                             </tr>

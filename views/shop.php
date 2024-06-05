@@ -70,7 +70,7 @@ $products = mysqli_fetch_all($sql_query, MYSQLI_ASSOC);
                     <p><?php echo $product['product_description'] ?></p>
                     <h4>$<?php echo $product['product_price']; ?></h4>
                 </div>
-                <a href=<?php echo "add_to_cart?id={$product['product_id']}" ?>><i class="fas fa-shopping-cart cart"></i></a>
+                <a href=<?php echo "add_to_cart/{$product['product_id']}" ?>><i class="fas fa-shopping-cart cart"></i></a>
             </div>
         <?php endforeach; ?>
     </div>

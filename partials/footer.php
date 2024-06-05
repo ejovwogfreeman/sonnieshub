@@ -5,6 +5,8 @@
             echo '<a href="/sonnieshub"><img src="../images/logo.png" class="logo" alt="" style="border: none; width: 100px"></a>';
         } else {
             if (preg_match($pattern, $url)) {
+                echo '<a href="/sonnieshub"><img src="/images/logo.png" class="logo" alt="" style="border: none; width: 100px"></a>';
+            } elseif (strpos($url, 'order_details') !== false) {
                 echo '<a href="/sonnieshub"><img src="../images/logo.png" class="logo" alt="" style="border: none; width: 100px"></a>';
             } else {
                 echo '<a href="/sonnieshub"><img src="images/logo.png" class="logo" alt="" style="border: none; width: 100px"></a>';

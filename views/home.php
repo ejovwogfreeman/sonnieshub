@@ -97,14 +97,14 @@ if (isset($_SESSION['msg'])) {
 </style>
 
 <section id="hero">
-    <h4>Trade-in-offer</h4>
-    <h2>Super value deals</h2>
-    <h1>On all products</h1>
-    <p>Save more with coupons & up to 70% off!</p>
+    <h4>Sonnies Hub</h4>
+    <h2>One Stop Shop</h2>
+    <h1>For Groceries</h1>
+    <p>and Lush Extension Hairs</p>
     <button>Shop Now</button>
 </section>
 
-<section id="feature" class="section-p1">
+<!-- <section id="feature" class="section-p1">
     <div class="fe-box">
         <img src="images/features/f1.png" alt="">
         <h6>Free Shipping</h6>
@@ -129,11 +129,11 @@ if (isset($_SESSION['msg'])) {
         <img src="images/features/f6.png" alt="">
         <h6>F24/7 Support</h6>
     </div>
-</section>
+</section> -->
 
 <section id="product1" class="section-p1">
     <h2>Featured Products</h2>
-    <p>Summer Collection New Modern Design</p>
+    <p>Shop Grocery Products At Affordable Prices</p>
     <div class="pro-container">
         <?php foreach ($productsGroc as $product) : ?>
             <div class="pro">
@@ -170,7 +170,7 @@ if (isset($_SESSION['msg'])) {
 
 <section id="product1" class="section-p1">
     <h2>Featured Products</h2>
-    <p>Summer Collection New Modern Design</p>
+    <p>Buy Hair And Air Products</p>
     <div class="pro-container">
         <?php foreach ($productsHair as $product) : ?>
             <div class="pro">

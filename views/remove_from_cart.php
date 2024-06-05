@@ -6,7 +6,7 @@ include('./config/db.php');
 // Function to redirect to cart page
 function redirect()
 {
-    header('Location: cart'); // Adjust redirect location as needed
+    header('Location: /sonnieshub/cart'); // Adjust redirect location as needed
     exit();
 }
 
@@ -19,7 +19,7 @@ if (isset($_SESSION['user'])) {
     redirect();
 }
 
-$productId = isset($_GET['id']) ? $_GET['id'] : null;
+$productId = isset($productId) ? $productId : null;
 
 if (!$productId) {
     $_SESSION['msg'] = "Product ID not provided";

@@ -1,10 +1,10 @@
 <?php
 
 if (strpos($_SERVER['REQUEST_URI'], 'admin') !== false) {
-    require_once('../config/session.php');
+    // require_once('../config/session.php');
     require_once('../config/db.php');
 } else {
-    require_once('./config/session.php');
+    // require_once('./config/session.php');
     require_once('./config/db.php');
 }
 

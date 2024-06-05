@@ -88,7 +88,7 @@ ob_end_flush();
 </section>
 
 <div class="flex-container">
-    <a href="cart" style="font-size: 30px; color:#088178;"><i class="fa fa-arrow-circle-left"></i></a>
+    <a href="/sonnieshub/checkout" style="font-size: 30px; color:#088178;"><i class="fa fa-arrow-circle-left"></i></a>
     <h3 class="m-0"></h3>
 </div>
 

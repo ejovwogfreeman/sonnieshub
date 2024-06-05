@@ -82,12 +82,12 @@ $isCancelled = $order['status'] === 'cancelled';
 <div class="order-details" style="margin-top: 100px;">
     <div class="profile">
         <div class="top-status">
-            <a href="cart" style="font-size: 30px; color:#088178;"><i class="fa fa-arrow-circle-left"></i></a>
+            <a href="/sonnieshub/dashboard" style="font-size: 30px; color:#088178;"><i class="fa fa-arrow-circle-left"></i></a>
             <div>
                 <?php if ($user['is_admin'] === 'true') : ?>
-                    <a href=<?php echo "/a2z_food/admin/change_order_status.php?id={$order['order_id']}" ?> style="text-decoration: none; color: white; padding: 5px; border-radius: 3px;  background-color: <?php echo $buttonColor; ?> <?php echo $isConfirmed ? 'disabled-link' : ''; ?>"><?php echo $buttonText; ?></a>
+                    <a href=<?php echo "/sonnieshub/admin/change_order_status/{$order['order_id']}" ?> style="text-decoration: none; color: white; padding: 5px; border-radius: 3px;  background-color: <?php echo $buttonColor; ?> <?php echo $isConfirmed ? 'disabled-link' : ''; ?>"><?php echo $buttonText; ?></a>
                 <?php endif ?>
-                <a href=<?php echo "/a2z_food/cancel_order.php?id={$order['order_id']}" ?> style="text-decoration: none; color: white; padding: 5px; border-radius: 3px; background-color: <?php echo $cancelButtonColor; ?> <?php echo $isCancelled ? 'disabled-link' : ''; ?>"><?php echo $cancelButtonText; ?></a>
+                <a href=<?php echo "/sonnieshub/cancel_order/{$order['order_id']}" ?> style="text-decoration: none; color: white; padding: 5px; border-radius: 3px; background-color: <?php echo $cancelButtonColor; ?> <?php echo $isCancelled ? 'disabled-link' : ''; ?>"><?php echo $cancelButtonText; ?></a>
             </div>
         </div>
 
@@ -118,7 +118,7 @@ $isCancelled = $order['status'] === 'cancelled';
                             <th scope="col">S/N</th>
                             <th scope="col">Product</th>
                             <th scope="col">Quantity</th>
-                            <th scope="col">Price Paid (NGN)</th>
+                            <th scope="col">Price Paid (£)</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -211,6 +211,7 @@ $isCancelled = $order['status'] === 'cancelled';
             margin: auto;
             border: 1px solid rgba(0, 0, 0, 0.1);
             overflow-x: scroll;
+            margin-bottom: 50px;
         }
 
         .order-details .profile {
@@ -1509,3 +1510,47 @@ $isCancelled = $order['status'] === 'cancelled';
         }
     }
 </style>
+
+<script>
+    const bar = document.getElementById('bar');
+    const close = document.getElementById('close');
+    const nav = document.getElementById('navbar');
+
+    if (bar) {
+        bar.addEventListener('click', () => {
+            nav.classList.add('active');
+        })
+    }
+
+    if (close) {
+        close.addEventListener('click', () => {
+            nav.classList.remove('active');
+        })
+    }
+
+    // Disable links on page load if order is Confirmed or Cancelled
+    window.onload = function() {
+        <?php if ($isConfirmed || $isCancelled) : ?>
+            disableLinks();
+        <?php endif; ?>
+    };
+
+    function disableLinks() {
+        var confirmLink = document.querySelector('.btn-success');
+        var cancelLink = document.querySelector('.btn-danger');
+
+        if (confirmLink) {
+            confirmLink.classList.add('disabled-link');
+            confirmLink.onclick = function() {
+                return false;
+            };
+        }
+
+        if (cancelLink) {
+            cancelLink.classList.add('disabled-link');
+            cancelLink.onclick = function() {
+                return false;
+            };
+        }
+    }
+</script>

@@ -4,8 +4,8 @@ session_start(); // Start the session
 // Start output buffering
 ob_start();
 
-// Get the requested URI
-$requestUri = $_SERVER['REQUEST_URI'];
+// Get and sanitize the requested URI
+$requestUri = filter_var($_SERVER['REQUEST_URI'], FILTER_SANITIZE_URL);
 
 // Remove query string from the URI
 $requestUri = strtok($requestUri, '?');
@@ -143,22 +143,31 @@ switch ($requestUri) {
     default:
         // Handle dynamic routes
         if (preg_match('#^/add_to_cart/([a-zA-Z0-9]+)$#', $requestUri, $matches)) {
-            $productId = $matches[1];
+            $productId = htmlspecialchars($matches[1]);
             require 'views/add_to_cart.php';
+        } elseif (preg_match('#^/remove_from_cart/([a-zA-Z0-9]+)$#', $requestUri, $matches)) {
+            $productId = htmlspecialchars($matches[1]);
+            require 'views/remove_from_cart.php';
         } elseif (preg_match('#^/order_details/([a-zA-Z0-9]+)$#', $requestUri, $matches)) {
-            $orderId = $matches[1];
+            $orderId = htmlspecialchars($matches[1]);
             require 'views/order_details.php';
+        } elseif (preg_match('#^/admin/change_order_status/([a-zA-Z0-9]+)$#', $requestUri, $matches)) {
+            $orderId = htmlspecialchars($matches[1]);
+            require 'admin/change_order_status.php';
+        } elseif (preg_match('#^/cancel_order/([a-zA-Z0-9]+)$#', $requestUri, $matches)) {
+            $orderId = htmlspecialchars($matches[1]);
+            require 'views/cancel_order.php';
         } elseif (preg_match('#^/profile/([a-zA-Z0-9]+)$#', $requestUri, $matches)) {
-            $userId = $matches[1];
+            $userId = htmlspecialchars($matches[1]);
             require 'views/profile.php';
         } elseif (preg_match('#^/product/([a-zA-Z0-9]+)$#', $requestUri, $matches)) {
-            $productId = $matches[1];
+            $productId = htmlspecialchars($matches[1]);
             require 'views/product.php';
         } elseif (preg_match('#^/blog/([a-zA-Z0-9]+)$#', $requestUri, $matches)) {
-            $blogId = $matches[1];
+            $blogId = htmlspecialchars($matches[1]);
             require 'views/blog.php';
         } elseif (preg_match('#^/reset_password/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$#', $requestUri, $matches)) {
-            $email = $matches[1];
+            $email = htmlspecialchars($matches[1]);
             require 'views/reset_password.php';
         } else {
             require 'views/404.php';
