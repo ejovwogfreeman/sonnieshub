@@ -1,34 +1,26 @@
 <?php
 
-session_start();
-include('./config/db.php');
 include('./partials/header.php');
+require_once('./config/db.php');
 
-$id = $_GET['id'];
+if (isset($productId)) {
+    // Fetch order details
+    $sqlProduct = "SELECT * FROM products WHERE product_id = '$productId'";
+    $resultProduct = mysqli_query($conn, $sqlProduct);
+    $product = mysqli_fetch_assoc($resultProduct);
+}
 
-$sql = "SELECT * FROM products WHERE product_id = '$id'";
+$productCategory = $product['product_category'];
 
-$sql_query = mysqli_query($conn, $sql);
-
-$product = mysqli_fetch_all($sql_query, MYSQLI_ASSOC)[0];
+$sqlCat = "SELECT * FROM products WHERE product_category = '$productCategory'";
+$result = mysqli_query($conn, $sqlCat);
+$productsCat = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 ?>
 
-<style>
-    .img-style {
-        height: 500px;
-        width: 500px;
-        object-fit: cover;
-
-        @media (max-width: 991px) {
-            width: 100%;
-            height: auto
-        }
-    }
-</style>
-
-<div class="container" style="margin-top: 100px;">
-    <div class="d-lg-flex align-items-center">
+<section id="productdetails" class="section-p1">
+    <div class="single-pro-image">
+        <!-- Make sure to use the correct column name for the image path -->
         <?php
         $imageData = $product['product_image'];
         $imageInfo = getimagesizefromstring($imageData);
@@ -40,23 +32,62 @@ $product = mysqli_fetch_all($sql_query, MYSQLI_ASSOC)[0];
             echo "Unable to determine image type.";
         }
         ?>
-        <img class="border rounded img-style" src="<?php echo $img_src ?>" alt="<?php echo $product['product_name'] ?>">
-        <div class="ms-lg-3 mt-lg-0 mt-3 d-flex flex-column justify-content-between">
-            <h3 class="card-title"><?php echo ucwords($product['product_name']) ?></h3>
-            <small class="bg-success text-light rounded p-1 px-2" style="width: fit-content; font-size: 12px"><?php echo $product['product_category'] ?></small>
-            <P class="my-5" style="text-align: justify;"><?php echo ucfirst($product['product_description']) ?></P>
-            <div class=" d-flex align-items-center justify-content-between">
-                <h4 class="card-text me-5">NGN <?php echo number_format($product['product_price']) ?></h4>
-                <a href=<?php echo "add_to_cart.php?id={$product['product_id']}" ?> class="btn btn-primary">ADD TO CART</a>
-            </div>
-            <?php if (isset($_SESSION['user']) && $_SESSION['user'][0]['is_admin'] === 'true') : ?>
-                <div class="mt-3">
-                    <a href=<?php echo "/a2z_food/admin/update_product.php?id={$product['product_id']}" ?> class="btn btn-outline-primary me-1">UPDATE</a>
-                    <a href=<?php echo "/a2z_food/admin/delete_product.php?id={$product['product_id']}" ?> class="btn btn-outline-danger">DELETE</a>
-                </div>
-            <?php endif ?>
-        </div>
+        <img src="<?php echo $img_src ?>" width="100%" id="MainImg" alt="">
     </div>
-</div>
+    <div class="single-pro-details" style="padding-top: 0px">
+        <h4> <?php echo $product['product_name'] ?></h4>
+        <span style="background-color: #088178; color: white; padding: 5px; border-radius: 3px; font-size: 12px;"><?php echo $product['product_category'] ?></span>
+        <h2>£ <?php echo $product['product_price'] ?></h2>
+        <a href=<?php echo "http://localhost/sonnieshub/add_to_cart/{$product['product_id']}" ?> style='background-color:#088178; border-radius: 3px; padding: 8px 6px; text-decoration: none; color: white'>Add To Cart</i></a>
+        <h4>Product Details</h4>
+        <span><?php echo $product['product_description'] ?></span>
+    </div>
+</section>
 
-<?php include('./partials/footer.php'); ?>
+<section id="product1" class="section-p1">
+    <h2>Similar Procuts</h2>
+    <p>Shop Similar Products Under <?php echo ucfirst($productCategory) ?></p>
+    <div class="pro-container">
+        <?php foreach ($productsCat as $product) : ?>
+            <div class="pro">
+                <!-- Make sure to use the correct column name for the image path -->
+                <?php
+                $imageData = $product['product_image'];
+                $imageInfo = getimagesizefromstring($imageData);
+
+                if ($imageInfo !== false) {
+                    $imageFormat = $imageInfo['mime'];
+                    $img_src = "data:$imageFormat;base64," . base64_encode($imageData);
+                } else {
+                    echo "Unable to determine image type.";
+                }
+                ?>
+                <img src="<?php echo $img_src ?>" alt="" style='width: 100%; height: 300px; object-fit: contain'>
+                <div class="des">
+                    <span><?php echo $product['product_category']; ?></span>
+                    <h5><?php echo $product['product_name']; ?></h5>
+                    <p><?php echo $product['product_description'] ?></p>
+                    <h4>$<?php echo $product['product_price']; ?></h4>
+                </div>
+                <a href=<?php echo "http://localhost/sonnieshub/add_to_cart/{$product['product_id']}" ?>><i class="fas fa-shopping-cart cart"></i></a>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</section>
+
+<!-- <section id="newsletter" class="section-p1 section-m1">
+    <div class="newstext">
+        <h4>Sign Up For Newsletter</h4>
+        <p>Get E-mail updates about our latest shop and <span>special offers.</span></p>
+    </div>
+    <div class="form">
+        <input type="text" placeholder="Your email address">
+        <button class="normal">Sign Up</button>
+    </div>
+</section> -->
+
+<?php
+
+include('./partials/footer.php');
+
+?>

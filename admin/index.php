@@ -63,7 +63,7 @@ if (isset($_SESSION['user'])) {
                             <tr>
                                 <td scope="row" style="font-weight: bold;"><?php echo $counter++ ?></td>
                                 <td><?php echo $order['shipping_address']; ?></td>
-                                <td>$ <?php echo number_format($order['total_price']); ?></td>
+                                <td>£ <?php echo number_format($order['total_price']); ?></td>
                                 <td><?php echo date('M d, Y', strtotime($order['date_ordered'])); ?></td>
                                 <td>
                                     <small style="background-color: 

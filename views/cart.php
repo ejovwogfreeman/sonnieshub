@@ -114,13 +114,13 @@ if (isset($_SESSION['msg'])) {
                         </td>
                         <td><img src=<?php echo $img_src ?> alt=""></td>
                         <td><?php echo $product['product_name'] ?></td>
-                        <td>$ <?php echo number_format($product['product_price']) ?></td>
+                        <td>£ <?php echo number_format($product['product_price']) ?></td>
                         <td>
                             <a href=<?php echo "decrease?id={$product['product_id']}" ?> class="icon"><i class="fas fa-minus-circle" style="color:black"></i></a>
                             <span><?php echo $product['quantity'] ?></span>
                             <a href=<?php echo "increase?id={$product['product_id']}" ?> class="icon"><i class="fas fa-plus-circle" style="color:black"></i></a>
                         </td>
-                        <td>$ <?php echo number_format($product['quantity'] * $product['product_price']) ?></td>
+                        <td>£ <?php echo number_format($product['quantity'] * $product['product_price']) ?></td>
                     </tr>
                 <?php endforeach ?>
             </tbody>
@@ -142,7 +142,7 @@ if (isset($_SESSION['msg'])) {
                 </tr>
                 <tr>
                     <td><strong>Total Price</strong></td>
-                    <td><strong>$ <?php echo number_format($totalPrice) ?></strong></td>
+                    <td><strong>£ <?php echo number_format($totalPrice) ?></strong></td>
                 </tr>
             </table>
             <a class="checkout" href="checkout" class="normal">PROCEED TO CHECKOUT</a>

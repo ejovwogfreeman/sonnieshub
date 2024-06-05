@@ -100,6 +100,23 @@ ob_end_flush();
         } else {
             // If no image is available, use the default image
             $img_src = "images/default.jpg";
+            $url = $_SERVER['REQUEST_URI'];
+
+            if (strpos($url, 'admin') !== false) {
+                $img_src = "../images/default.jpg";
+            } else {
+                if (preg_match($pattern, $url)) {
+                    $img_src = "../images/default.jpg";
+                } elseif (strpos($url, 'order_details') !== false) {
+                    $img_src = "../images/default.jpg";
+                } elseif (strpos($url, 'user_profile') !== false) {
+                    $img_src = "../images/default.jpg";
+                } elseif (strpos($url, 'product') !== false) {
+                    $img_src = "../images/default.jpg";
+                } else {
+                    $img_src = "images/default.jpg";
+                }
+            }
         }
         ?>
         <img class="profile-image" src="<?php echo $img_src; ?>" alt="<?php echo $user['username']; ?>">

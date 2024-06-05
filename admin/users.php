@@ -69,7 +69,7 @@ if (isset($_SESSION['user'])) {
                                 <td><?php echo date('M d, Y', strtotime($user['date_joined'])); ?></td>
                                 <td>
                                     <small class="bg-primary text-light p-1 rounded">
-                                        <a href=<?php echo "/sonnieshub/profile/{$user['user_id']}" ?> class="text-decoration-none text-light">View Profile</a>
+                                        <a href=<?php echo "/sonnieshub/user_profile/{$user['user_id']}" ?> class="text-decoration-none text-light">View Profile</a>
                                     </small>
                                 </td>
                             </tr>

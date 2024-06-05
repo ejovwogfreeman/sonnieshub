@@ -15,24 +15,15 @@ include('./partials/header.php');
 <section id="contact-details" class="section-p1">
     <div class="details">
         <span>GET IN TOUCH</span>
-        <h2>Visit one of our agency locations or contact us today.</h2>
-        <h3>Head Office</h3>
+        <h2>Get in touch with us today</h2>
         <div>
             <li>
-                <i class="fas fa-map"></i>
-                <p>Lahore, Pakistan 54840</p>
+                <i class="fas fa-phone-alt"></i>
+                <p>+447776971422</p>
             </li>
             <li>
                 <i class="fas fa-envelope"></i>
-                <p>connectwithmawais@gmail.com</p>
-            </li>
-            <li>
-                <i class="fas fa-phone-alt"></i>
-                <p>+92-321-4655990
-            </li>
-            <li>
-                <i class="fas fa-clock"></i>
-                <p>Monday to Saturday: 9:00 AM to 16:00 PM</p>
+                <p><a href="mailto:sonnietravels24@gmail.com">Sonnietravels24@gmail.com</a></p>
             </li>
         </div>
     </div>
@@ -41,7 +32,7 @@ include('./partials/header.php');
     </div>
 </section>
 
-<section id="form-details">
+<!-- <section id="form-details">
     <form action="">
         <span>LEAVE A MESSAGE</span>
         <h2>We love to hear from you</h2>
@@ -76,7 +67,7 @@ include('./partials/header.php');
         <input type="text" placeholder="Your email address">
         <button class="normal">Sign Up</button>
     </div>
-</section>
+</section> -->
 
 <?php
 

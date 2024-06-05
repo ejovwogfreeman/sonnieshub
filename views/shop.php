@@ -27,7 +27,6 @@ $products = mysqli_fetch_all($sql_query, MYSQLI_ASSOC);
 
 <section id="page-header">
     <h2>#stayhome</h2>
-    <p>Save more with coupons & up to 70% off!</p>
 </section>
 
 <section id="product1" class="section-p1">
@@ -63,12 +62,12 @@ $products = mysqli_fetch_all($sql_query, MYSQLI_ASSOC);
                     echo "Unable to determine image type.";
                 }
                 ?>
-                <img src="<?php echo $img_src ?>" alt="" style='width: 100%; height: 300px; object-fit: contain'>
+                <a href=<?php echo "product/{$product['product_id']}" ?>><img src="<?php echo $img_src ?>" alt="" style='width: 100%; height: 300px; object-fit: contain'></a>
                 <div class="des">
                     <span><?php echo $product['product_category']; ?></span>
                     <h5><?php echo $product['product_name']; ?></h5>
                     <p><?php echo $product['product_description'] ?></p>
-                    <h4>$<?php echo $product['product_price']; ?></h4>
+                    <h4>£<?php echo $product['product_price']; ?></h4>
                 </div>
                 <a href=<?php echo "add_to_cart/{$product['product_id']}" ?>><i class="fas fa-shopping-cart cart"></i></a>
             </div>
@@ -82,7 +81,7 @@ $products = mysqli_fetch_all($sql_query, MYSQLI_ASSOC);
     <a href="#"><i class="fas fa-long-arrow-alt-right"></i></a>
 </section> -->
 
-<section id="newsletter" class="section-p1 section-m1">
+<!-- <section id="newsletter" class="section-p1 section-m1">
     <div class="newstext">
         <h4>Sign Up For Newsletter</h4>
         <p>Get E-mail updates about our latest shop and <span>special offers.</span></p>
@@ -91,7 +90,7 @@ $products = mysqli_fetch_all($sql_query, MYSQLI_ASSOC);
         <input type="text" placeholder="Your email address">
         <button class="normal">Sign Up</button>
     </div>
-</section>
+</section> -->
 
 <?php
 

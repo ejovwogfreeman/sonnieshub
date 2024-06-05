@@ -30,6 +30,8 @@ if (strpos($_SERVER['REQUEST_URI'], 'admin') !== false) {
     <!-- font-awesome cdn link -->
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
 
+    <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
+
     <!-- custom css file link -->
     <?php
     // Get the current URL
@@ -38,10 +40,19 @@ if (strpos($_SERVER['REQUEST_URI'], 'admin') !== false) {
     // Define the pattern to match '/profile/' followed by an ID
     $pattern = '/\/profile\/[0-9a-zA-Z]+$/';
 
+
     if (strpos($url, 'admin') !== false) {
         echo '<link rel="stylesheet" href="../css/style.css">';
     } else {
         if (preg_match($pattern, $url)) {
+            echo '<link rel="stylesheet" href="/css/style.css">';
+        } elseif (strpos($url, 'order_details') !== false) {
+            echo '<link rel="stylesheet" href="../css/style.css">';
+        } elseif (strpos($url, 'user_profile') !== false) {
+            echo '<link rel="stylesheet" href="../css/style.css">';
+        } elseif (strpos($url, 'blog') !== false) {
+            echo '<link rel="stylesheet" href="../css/style.css">';
+        } elseif (strpos($url, 'product') !== false) {
             echo '<link rel="stylesheet" href="../css/style.css">';
         } else {
             echo '<link rel="stylesheet" href="css/style.css">';
@@ -63,6 +74,12 @@ if (strpos($_SERVER['REQUEST_URI'], 'admin') !== false) {
             if (preg_match($pattern, $url)) {
                 echo '<a href="/sonnieshub"><img src="/images/logo.png" class="logo" alt="" style="border: none; width: 100px"></a>';
             } elseif (strpos($url, 'order_details') !== false) {
+                echo '<a href="/sonnieshub"><img src="/images/logo.png" class="logo" alt="" style="border: none; width: 100px"></a>';
+            } elseif (strpos($url, 'user_profile') !== false) {
+                echo '<a href="/sonnieshub"><img src="/images/logo.png" class="logo" alt="" style="border: none; width: 100px"></a>';
+            } elseif (strpos($url, 'blog') !== false) {
+                echo '<a href="/sonnieshub"><img src="../images/logo.png" class="logo" alt="" style="border: none; width: 100px"></a>';
+            } elseif (strpos($url, 'product') !== false) {
                 echo '<a href="/sonnieshub"><img src="../images/logo.png" class="logo" alt="" style="border: none; width: 100px"></a>';
             } else {
                 echo '<a href="/sonnieshub"><img src="images/logo.png" class="logo" alt="" style="border: none; width: 100px"></a>';
@@ -73,7 +90,7 @@ if (strpos($_SERVER['REQUEST_URI'], 'admin') !== false) {
             <ul id="navbar">
                 <li><a class="active" href="/sonnieshub/">Home</a></li>
                 <li><a href="/sonnieshub/shop">Shop</a></li>
-                <li><a href="/sonnieshub/blog">Blog</a></li>
+                <li><a href="/sonnieshub/articles">Blog</a></li>
                 <li><a href="/sonnieshub/about">About</a></li>
                 <li><a href="/sonnieshub/contact">Contact</a></li>
                 <?php if (!isset($_SESSION['user'])) : ?>

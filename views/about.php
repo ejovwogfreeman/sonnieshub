@@ -9,7 +9,6 @@ include('./partials/header.php');
 
 <section id="page-header" class="about-header">
   <h2>#KnowUs</h2>
-  <p>Lorem ipsusm dolor sit amet, consectelur</p>
 </section>
 
 <section id="about-head" class="section-p1">
@@ -17,25 +16,18 @@ include('./partials/header.php');
   <div>
     <h2>Who We Are?</h2>
     <p>
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-      eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-      minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-      aliquip ex ea commodo consequat. Duis autterirure dolor in
-      reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-      pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-      culpa qui officia deserunt mollit anim id est laborum.
+      Welcome to Sonnie's Hub.
+      A one stop shop where you can get your quality lush hair extensions, local Nigerian food stuffs and more.
+      We are committed to always update our store with all the good good things that interests our customers..
     </p>
-    <abbr title="">Create stunning images with as much or as little control as fa-you
-      like thanks to a choice of Basic and Creative modes.
-    </abbr>
     <br /><br />
-    <marquee bgcolor="#ccc" loop="-1" scrollamount="5" width="100%">Create stunning images with as much or as little control as you like
-      thanks to a choice of Basic and Creative modes.
+    <marquee bgcolor="#ccc" loop="-1" scrollamount="5" width="100%">
+      Sonnie's Hub, a one stop shop for you!
     </marquee>
   </div>
 </section>
 
-<section id="about-app" class="section-p1">
+<!-- <section id="about-app" class="section-p1">
   <h1>Download our <a href="#">App</a></h1>
   <div class="video">
     <video autoplay muted loop src="images/about/1.mp4"></video>
@@ -81,7 +73,7 @@ include('./partials/header.php');
     <input type="text" placeholder="Your email address" />
     <button class="normal">Sign Up</button>
   </div>
-</section>
+</section> -->
 
 <?php
 

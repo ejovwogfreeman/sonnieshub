@@ -1,4 +1,5 @@
 <?php
+
 session_start(); // Start the session
 
 // Start output buffering
@@ -49,7 +50,15 @@ $publicRoutes = [
 ];
 
 // Check if the route is public or requires authentication
-if (!in_array($requestUri, $publicRoutes) && !isAuthenticated()) {
+$dynamicPublicRoutes = [
+    '#^/product/([a-zA-Z0-9]+)$#'
+];
+
+$isPublicRoute = in_array($requestUri, $publicRoutes) || array_reduce($dynamicPublicRoutes, function ($carry, $route) use ($requestUri) {
+    return $carry || preg_match($route, $requestUri);
+}, false);
+
+if (!$isPublicRoute && !isAuthenticated()) {
     error_log('User is not authenticated, redirecting to login');
     header("Location: $basePath/login");
     exit();
@@ -63,11 +72,8 @@ switch ($requestUri) {
     case '/shop':
         require 'views/shop.php';
         break;
-    case '/product':
-        require 'views/single_product.php';
-        break;
-    case '/blog':
-        require 'views/blog.php';
+    case '/articles':
+        require 'views/blogs.php';
         break;
     case '/about':
         require 'views/about.php';
@@ -157,12 +163,12 @@ switch ($requestUri) {
         } elseif (preg_match('#^/cancel_order/([a-zA-Z0-9]+)$#', $requestUri, $matches)) {
             $orderId = htmlspecialchars($matches[1]);
             require 'views/cancel_order.php';
-        } elseif (preg_match('#^/profile/([a-zA-Z0-9]+)$#', $requestUri, $matches)) {
+        } elseif (preg_match('#^/user_profile/([a-zA-Z0-9]+)$#', $requestUri, $matches)) {
             $userId = htmlspecialchars($matches[1]);
             require 'views/profile.php';
         } elseif (preg_match('#^/product/([a-zA-Z0-9]+)$#', $requestUri, $matches)) {
             $productId = htmlspecialchars($matches[1]);
-            require 'views/product.php';
+            require 'views/product.php'; // Ensure this view exists
         } elseif (preg_match('#^/blog/([a-zA-Z0-9]+)$#', $requestUri, $matches)) {
             $blogId = htmlspecialchars($matches[1]);
             require 'views/blog.php';

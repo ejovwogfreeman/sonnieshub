@@ -149,12 +149,12 @@ if (isset($_SESSION['msg'])) {
                     echo "Unable to determine image type.";
                 }
                 ?>
-                <img src="<?php echo $img_src ?>" alt="" style='width: 100%; height: 300px; object-fit: contain'>
+                <a href=<?php echo "product/{$product['product_id']}" ?>><img src="<?php echo $img_src ?>" alt="" style='width: 100%; height: 300px; object-fit: contain'></a>
                 <div class="des">
                     <span><?php echo $product['product_category']; ?></span>
                     <h5><?php echo $product['product_name']; ?></h5>
                     <p><?php echo $product['product_description'] ?></p>
-                    <h4>$<?php echo $product['product_price']; ?></h4>
+                    <h4>£<?php echo $product['product_price']; ?></h4>
                 </div>
                 <a href=<?php echo "add_to_cart/{$product['product_id']}" ?>><i class="fas fa-shopping-cart cart"></i></a>
             </div>
@@ -186,12 +186,12 @@ if (isset($_SESSION['msg'])) {
                     echo "Unable to determine image type.";
                 }
                 ?>
-                <img src="<?php echo $img_src ?>" alt="" style='width: 100%; height: 300px; object-fit: contain'>
+                <a href=<?php echo "product/{$product['product_id']}" ?>><img src="<?php echo $img_src ?>" alt="" style='width: 100%; height: 300px; object-fit: contain'></a>
                 <div class="des">
                     <span><?php echo $product['product_category']; ?></span>
                     <h5><?php echo $product['product_name']; ?></h5>
                     <p><?php echo $product['product_description'] ?></p>
-                    <h4>$<?php echo $product['product_price']; ?></h4>
+                    <h4>£<?php echo $product['product_price']; ?></h4>
                 </div>
                 <a href=<?php echo "add_to_cart/{$product['product_id']}" ?>><i class="fas fa-shopping-cart cart"></i></a>
             </div>
@@ -229,7 +229,7 @@ if (isset($_SESSION['msg'])) {
     </div>
 </section>
 
-<section id="newsletter" class="section-p1 section-m1">
+<!-- <section id="newsletter" class="section-p1 section-m1">
     <div class="newstext">
         <h4>Sign Up For Newsletter</h4>
         <p>Get E-mail updates about our latest shop and <span>special offers.</span></p>
@@ -238,7 +238,7 @@ if (isset($_SESSION['msg'])) {
         <input type="text" placeholder="Your email address">
         <button class="normal">Sign Up</button>
     </div>
-</section>
+</section> -->
 
 <?php
 

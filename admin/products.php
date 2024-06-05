@@ -11,9 +11,9 @@ if (isset($_SESSION['user'])) {
     $username = $user['username'];
 
     // Fetch all orders of the user from the database
-    $sql = "SELECT * FROM orders ORDER BY date_ordered DESC";
+    $sql = "SELECT * FROM products ORDER BY created_at DESC";
     $result = mysqli_query($conn, $sql);
-    $orders = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
     $counter = 1;
 }
@@ -30,13 +30,13 @@ if (isset($_SESSION['user'])) {
         <h2 class="h2">All Products</h2>
     </div>
 
-    <?php if (!empty($orders)) : ?>
+    <?php if (!empty($products)) : ?>
         <?php
         // Group orders by month
         $groupedOrders = [];
-        foreach ($orders as $order) {
-            $month = date('F Y', strtotime($order['date_ordered']));
-            $groupedOrders[$month][] = $order;
+        foreach ($products as $product) {
+            $month = date('F Y', strtotime($product['created_at']));
+            $groupedOrders[$month][] = $product;
         }
         ?>
 
@@ -47,33 +47,27 @@ if (isset($_SESSION['user'])) {
                     <thead>
                         <tr>
                             <th scope="col">S/N</th>
-                            <th scope="col">SHIPPING ADDRESS</th>
-                            <th scope="col">TOTAL PRICE</th>
-                            <th scope="col">DATE ORDERED</th>
-                            <th scope="col">STATUS</th>
-                            <th scope="col">ORDER DETAILS</th>
+                            <th scope="col">PRODUCT NAME</th>
+                            <th scope="col">CATEGORY</th>
+                            <th scope="col">PRICE</th>
+                            <th scope="col">DATE CREATED</th>
+                            <th scope="col">PRODUCT DETAILS</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
                         $counter = 1;
                         ?>
-                        <?php foreach ($monthOrders as $order) : ?>
+                        <?php foreach ($monthOrders as $product) : ?>
                             <tr>
                                 <td scope="row" style="font-weight: bold;"><?php echo $counter++ ?></td>
-                                <td><?php echo $order['shipping_address']; ?></td>
-                                <td>$ <?php echo number_format($order['total_price']); ?></td>
-                                <td><?php echo date('M d, Y', strtotime($order['date_ordered'])); ?></td>
-                                <td>
-                                    <small class="<?php
-                                                    echo $order['status'] === 'pending' ? 'bg-warning' : ($order['status'] === 'processing' ? 'bg-info' : ($order['status'] === 'confirmed' ? 'bg-success' : ($order['status'] === 'cancelled' ? 'bg-danger' : '')));
-                                                    ?> text-light p-1 rounded">
-                                        <?php echo ($order['status']); ?>
-                                    </small>
-                                </td>
+                                <td><?php echo $product['product_name']; ?></td>
+                                <td><?php echo $product['product_category']; ?></td>
+                                <td>£ <?php echo number_format($product['product_price']); ?></td>
+                                <td><?php echo date('M d, Y', strtotime($product['created_at'])); ?></td>
                                 <td>
                                     <small class="bg-primary text-light p-1 rounded">
-                                        <a href=<?php echo "/sonnieshub/order_details.php?id={$order['order_id']}" ?> class="text-decoration-none text-light">View Order</a>
+                                        <a href=<?php echo "/sonnieshub/product/{$product['product_id']}" ?> class="text-decoration-none text-light">View Product</a>
                                     </small>
                                 </td>
                             </tr>
