@@ -93,6 +93,9 @@ switch ($requestUri) {
     case '/payment':
         require 'views/payment.php';
         break;
+    case '/travels':
+        require 'views/travels.php';
+        break;
     case '/remove_from_cart':
         require 'views/remove_from_cart.php';
         break;
@@ -139,6 +142,9 @@ switch ($requestUri) {
         break;
     case '/admin/completed_orders':
         require 'admin/completed_orders.php';
+        break;
+    case '/completed_orders':
+        require 'views/completed_orders.php';
         break;
     case '/profile':
         require 'views/profile.php';

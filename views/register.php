@@ -8,10 +8,14 @@ if (session_status() === PHP_SESSION_NONE) {
 
 include('./partials/header.php');
 require_once('./config/db.php');
+include 'mail.php';
 
 if (isset($_SESSION['user'])) {
     header('Location: dashboard');
 }
+
+$emailSubject = 'WELCOME ON BOARD';
+$htmlFilePath = './html_mails/register.html';
 
 $firstName = $lastName = $email = $password = $confirmPassword = '';
 $errors = [];

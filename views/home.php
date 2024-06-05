@@ -163,9 +163,9 @@ if (isset($_SESSION['msg'])) {
 </section>
 
 <section id="banner" class="section-m1">
-    <h4>Repair Services</h4>
-    <h2>Up to <span>70% Off</span> - All t-Shirts & Accessories</h2>
-    <button class="normal">Explore More</button>
+    <h4>Sonnie Travels</h4>
+    <h2>Book your <span>Dream</span> - Vacation</h2>
+    <button class="normal" onclick="window.location.replace(`http://localhost/sonnieshub/travels`)">Book Now</button>
 </section>
 
 <section id="product1" class="section-p1">
@@ -201,31 +201,27 @@ if (isset($_SESSION['msg'])) {
 
 <section id="sm-banner" class="section-p1">
     <div class="banner-box">
-        <h4>crazy deals</h4>
-        <h2>buy 1 get 1 free</h2>
-        <span>The best classic dress is on sale at cara</span>
-        <button class="white">Learn more</button>
+        <h2>Lush Extension Hairs</h2>
+        <button class="white" onclick="window.location.replace(`http://localhost/sonnieshub/shop?category=hair`)">Shop Now</button>
     </div>
     <div class="banner-box">
-        <h4>spring/summer</h4>
-        <h2>upcoming season</h2>
-        <span>The best classic dress is on sale at cara</span>
-        <button class="white">Collection</button>
+        <h2>Groceries</h2>
+        <button class="white" onclick="window.location.replace(`http://localhost/sonnieshub/shop?category=groceries`)">Shop Now</button>
     </div>
 </section>
 
 <section id="banner3">
     <div class="banner-box">
-        <h2>SEASONAL SALE</h2>
-        <h3>Winter Collection -50% OFF</h3>
+        <!-- <h2>SEASONAL SALE</h2>
+        <h3>Winter Collection -50% OFF</h3> -->
     </div>
     <div class="banner-box">
-        <h2>NEW FOOTWEAR COLLECTION</h2>
-        <h3>Spring / Summer 2023</h3>
+        <!-- <h2>NEW FOOTWEAR COLLECTION</h2>
+        <h3>Spring / Summer 2023</h3> -->
     </div>
     <div class="banner-box">
-        <h2>T-SHIRTS</h2>
-        <h3>New Trendy Prints</h3>
+        <!-- <h2>T-SHIRTS</h2>
+        <h3>New Trendy Prints</h3> -->
     </div>
 </section>
 

@@ -28,9 +28,15 @@ $sqlUserOrders = "SELECT * FROM orders WHERE user_id = '$userId'";
 $userOrdersResult = mysqli_query($conn, $sqlUserOrders);
 $userOrders = mysqli_fetch_all($userOrdersResult, MYSQLI_ASSOC);
 
-$sqlCompletedOrders = "SELECT * FROM orders WHERE status = 'completed'";
-$completedOrdersResult = mysqli_query($conn, $sqlCompletedOrders);
-$completedOrders = mysqli_fetch_all($completedOrdersResult, MYSQLI_ASSOC);
+if ($user['is_admin'] === 'true') {
+    $sqlCompletedOrders = "SELECT * FROM orders WHERE status = 'confirmed'";
+    $completedOrdersResult = mysqli_query($conn, $sqlCompletedOrders);
+    $completedOrders = mysqli_fetch_all($completedOrdersResult, MYSQLI_ASSOC);
+} else {
+    $sqlCompletedOrders = "SELECT * FROM orders WHERE status = 'confirmed' AND user_id = '$userId'";
+    $completedOrdersResult = mysqli_query($conn, $sqlCompletedOrders);
+    $completedOrders = mysqli_fetch_all($completedOrdersResult, MYSQLI_ASSOC);
+}
 
 function showFlyingAlert($message, $className)
 {
@@ -174,16 +180,29 @@ if (isset($_SESSION['msg'])) {
                 </svg>
             </div>
         </a>
-        <a href='/sonnieshub/admin/completed_orders' class="item">
-            <h3 class="fig"><?php echo count($completedOrders) ?></h3>
-            <hr>
-            <div class="text">
-                <h3>Completed Orders</h3>
-                <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24">
-                    <path fill="currentColor" d="M9 20c0 1.1-.9 2-2 2s-2-.9-2-2s.9-2 2-2s2 .9 2 2m8-2c-1.1 0-2 .9-2 2s.9 2 2 2s2-.9 2-2s-.9-2-2-2m-9.8-3.2v-.1l.9-1.7h7.4c.7 0 1.4-.4 1.7-1l3.9-7l-1.7-1l-3.9 7h-7L4.3 2H1v2h2l3.6 7.6L5.2 14c-.1.3-.2.6-.2 1c0 1.1.9 2 2 2h12v-2H7.4c-.1 0-.2-.1-.2-.2M18 2.8l-1.4-1.4l-4.8 4.8l-2.6-2.6L7.8 5l4 4z" />
-                </svg>
-            </div>
-        </a>
+        <?php if ($user['is_admin'] === 'true') : ?>
+            <a href='/sonnieshub/admin/completed_orders' class="item">
+                <h3 class="fig"><?php echo count($completedOrders) ?></h3>
+                <hr>
+                <div class="text">
+                    <h3>Completed Orders</h3>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M9 20c0 1.1-.9 2-2 2s-2-.9-2-2s.9-2 2-2s2 .9 2 2m8-2c-1.1 0-2 .9-2 2s.9 2 2 2s2-.9 2-2s-.9-2-2-2m-9.8-3.2v-.1l.9-1.7h7.4c.7 0 1.4-.4 1.7-1l3.9-7l-1.7-1l-3.9 7h-7L4.3 2H1v2h2l3.6 7.6L5.2 14c-.1.3-.2.6-.2 1c0 1.1.9 2 2 2h12v-2H7.4c-.1 0-.2-.1-.2-.2M18 2.8l-1.4-1.4l-4.8 4.8l-2.6-2.6L7.8 5l4 4z" />
+                    </svg>
+                </div>
+            </a>
+        <?php else : ?>
+            <a href='/sonnieshub/completed_orders' class="item">
+                <h3 class="fig"><?php echo count($completedOrders) ?></h3>
+                <hr>
+                <div class="text">
+                    <h3>Completed Orders</h3>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M9 20c0 1.1-.9 2-2 2s-2-.9-2-2s.9-2 2-2s2 .9 2 2m8-2c-1.1 0-2 .9-2 2s.9 2 2 2s2-.9 2-2s-.9-2-2-2m-9.8-3.2v-.1l.9-1.7h7.4c.7 0 1.4-.4 1.7-1l3.9-7l-1.7-1l-3.9 7h-7L4.3 2H1v2h2l3.6 7.6L5.2 14c-.1.3-.2.6-.2 1c0 1.1.9 2 2 2h12v-2H7.4c-.1 0-.2-.1-.2-.2M18 2.8l-1.4-1.4l-4.8 4.8l-2.6-2.6L7.8 5l4 4z" />
+                    </svg>
+                </div>
+            </a>
+        <?php endif; ?>
     </div>
 </div>
 

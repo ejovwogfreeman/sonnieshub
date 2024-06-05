@@ -6,6 +6,9 @@ include('./config/db.php');
 $firstName = $lastName = $email = $password = $confirmPassword = '';
 $errors = [];
 
+$emailSubject = 'FORGOT PASSWORD';
+$htmlFilePath = './html_mails/reset_password.html';
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validate first name
     if (empty($_POST["firstName"])) {
@@ -62,6 +65,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Execute the statement
         if (mysqli_stmt_execute($stmt)) {
+            sendEmail($email, $emailSubject, $htmlFilePath, $email);
+
+            $message = "An email has been sent to your email \"$email\" with a link to reset your password";
             echo "<div class='success-message'>Registration successful!</div>";
             // Clear the form fields
             $firstName = $lastName = $email = $password = $confirmPassword = '';

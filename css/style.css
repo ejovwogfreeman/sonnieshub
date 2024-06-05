@@ -299,7 +299,8 @@ body {
   justify-content: center;
   align-items: center;
   text-align: center;
-  background-image: url("../images/banner/b2.jpg");
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("../images/travel1.jpeg");
   background-size: cover;
   background-position: center;
   width: 100%;
@@ -380,21 +381,22 @@ body {
   justify-content: center;
   align-items: flex-start;
   text-align: center;
-  background-image: url("../images/banner/b7.jpg");
+  background-image: url("../images/groc1.jpeg");
   background-size: cover;
   background-position: center;
   min-width: 30%;
   height: 30vh;
   padding: 30px;
   margin-bottom: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 #banner3 .banner-box:nth-child(2) {
-  background-image: url("../images/banner/b4.jpg");
+  background-image: url("../images/groc3.jpeg");
 }
 
 #banner3 .banner-box:nth-child(3) {
-  background-image: url("../images/banner/b18.jpg");
+  background-image: url("../images/groc2.jpeg");
 }
 
 #banner3 {

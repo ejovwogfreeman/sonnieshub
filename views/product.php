@@ -38,7 +38,7 @@ $productsCat = mysqli_fetch_all($result, MYSQLI_ASSOC);
         <h4> <?php echo $product['product_name'] ?></h4>
         <span style="background-color: #088178; color: white; padding: 5px; border-radius: 3px; font-size: 12px;"><?php echo $product['product_category'] ?></span>
         <h2>£ <?php echo $product['product_price'] ?></h2>
-        <a href=<?php echo "http://localhost/sonnieshub/add_to_cart/{$product['product_id']}" ?> style='background-color:#088178; border-radius: 3px; padding: 8px 6px; text-decoration: none; color: white'>Add To Cart</i></a>
+        <a href=<?php echo "http://localhost/sonnieshub/add_to_cart/{$product['product_id']}" ?> style='background-color:#088178; border-radius: 3px; padding: 8px 6px; text-decoration: none; color: white'>Add To Cart</a>
         <h4>Product Details</h4>
         <span><?php echo $product['product_description'] ?></span>
     </div>

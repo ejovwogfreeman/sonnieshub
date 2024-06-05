@@ -1,6 +1,6 @@
 <?php
 
-include('./config/session.php');
+include('admincheck.php');
 require_once('./config/db.php');
 include('./partials/header.php');
 include('./utils/random_id.php');
@@ -11,7 +11,7 @@ if (isset($_SESSION['user'])) {
     $username = $user['username'];
 
     // Fetch all orders of the user from the database
-    $sql = "SELECT * FROM orders WHERE status = 'completed' ORDER BY date_ordered DESC";
+    $sql = "SELECT * FROM orders WHERE status = 'confirmed' ORDER BY date_ordered DESC";
     $result = mysqli_query($conn, $sql);
     $orders = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
